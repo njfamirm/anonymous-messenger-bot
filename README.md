@@ -1,6 +1,6 @@
 # Telegram anonymous message bot
 
-Telegram bot for contorol anonymous message, for chnnels admins or personal useage
+Anonymous messaging bot for channels or for personal use!
 
 Features
 ---
