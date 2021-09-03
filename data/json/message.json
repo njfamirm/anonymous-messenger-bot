@@ -1,0 +1,6 @@
+{
+  "start": {
+    "message": "Hello!",
+    "inlieKeyword": [["test1", "data1"], ["test2", "data2"]]
+  }
+}

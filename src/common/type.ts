@@ -2,11 +2,16 @@ import { InlineKeyboardButton, InlineKeyboardMarkup } from "typegram";
 
 // for all message type
 export interface Message {
-  type: "text" | "video" | "photo" | "music" | "voice" | "roundedVideo";
+  type:
+    | "text"
+    | "video"
+    | "photo"
+    | "music"
+    | "voice"
+    | "roundedVideo"
+    | "document";
   text?: string;
-  fileId?: string;
-  delay?: number;
-  caption?: string;
+  fileName?: string;
   inlineKeyboard?: Menu;
 }
 

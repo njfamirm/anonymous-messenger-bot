@@ -7,12 +7,13 @@ import { startMenu } from "../common/Menu";
 const startMessage: Message = {
   type: "text",
   text: "Hello World!",
-  inlineKeyboard: startMenu
+  inlineKeyboard: startMenu,
 };
 
 // start command
 async function start(ctx: Context) {
   const user = ctx.from;
+  console.log(user);
   if (user?.id != undefined) {
     const chatid: chatID = user.id;
     await sendMessage(chatid, startMessage);
