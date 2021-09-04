@@ -1,8 +1,8 @@
 import { readFileSync } from "fs";
 import bot from "./bot";
 import { photosPath } from "./data";
-import { messages } from "./db";
-import { Message, chatID, Action } from "./type";
+// import { messages } from "./db";
+import { Message, chatID } from "./type";
 
 // send message handler
 export async function sendMessage(chatid: chatID, message: Message) {
