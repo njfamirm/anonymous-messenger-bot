@@ -2,10 +2,12 @@
   "dependencies": {
     "@alimd/1db": "alimd/1db",
     "@types/debug": "^4.1.7",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/node": "^16.7.10",
     "debug": "^4.3.2",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "path": "^0.12.7",
     "telegraf": "^4.4.1"
   }

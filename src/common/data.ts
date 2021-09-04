@@ -1,2 +1,3 @@
-export const photosPath: string = "./data/photo/"; // edit to ../data/photo
-export const jsonPath: string = "./data/json/" // edit to ../data/json
+export const photosPath: string = "./data/photo/"; // edit to ../data/photo for server
+export const jsonPath: string = "./data/json/" // edit to ../data/json fpr server
+
