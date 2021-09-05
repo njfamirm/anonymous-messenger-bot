@@ -1,11 +1,9 @@
-import { readFileSync } from "fs";
 import bot from "./bot";
 import { photosPath } from "./data";
-// import { messages } from "./db";
-import { Message, chatID } from "./type";
+import { Message, ChatID } from "./type";
 
 // send message handler
-export async function sendMessage(chatid: chatID, message: Message) {
+export async function sendMessage(chatid: ChatID, message: Message) {
   switch (message.type) {
     case "text":
       await sendText(chatid, message);
@@ -16,7 +14,7 @@ export async function sendMessage(chatid: chatID, message: Message) {
       await sendPhoto(chatid, message);
       break;
 
-    // upload voice
+    // upload document
     case "document":
       await sendDocument(chatid, message);
       break;
@@ -31,7 +29,7 @@ export async function sendMessage(chatid: chatID, message: Message) {
       await sendVideo(chatid, message);
       break;
 
-    // rounded video...
+    // video note...
     // ** TODO **//
 
     default:
@@ -40,8 +38,8 @@ export async function sendMessage(chatid: chatID, message: Message) {
 }
 
 // send text
-async function sendText(chatid: chatID, message: Message) {
-  if (message.text == undefined) return;
+async function sendText(chatid: ChatID, message: Message) {
+  if (message.text == undefined || message.text == "") return;
   // text message with inline keyboard
   if (message.inlineKeyboard != undefined) {
     await bot.telegram.sendChatAction(chatid, "typing");
@@ -56,7 +54,7 @@ async function sendText(chatid: chatID, message: Message) {
 }
 
 // send photo
-async function sendPhoto(chatid: chatID, message: Message) {
+async function sendPhoto(chatid: ChatID, message: Message) {
   // if not have file, break func!
   if (message.fileName == undefined) return;
 
@@ -65,7 +63,7 @@ async function sendPhoto(chatid: chatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: readFileSync(photosPath + message.fileName) },
+      { source: photosPath + message.fileName },
       {
         caption: message.text,
         reply_markup: { inline_keyboard: message.inlineKeyboard },
@@ -77,7 +75,7 @@ async function sendPhoto(chatid: chatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: readFileSync(photosPath + message.fileName) },
+      { source: photosPath + message.fileName },
       { caption: message.text }
     );
 
@@ -86,7 +84,7 @@ async function sendPhoto(chatid: chatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: readFileSync(photosPath + message.fileName) },
+      { source: photosPath + message.fileName },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
     );
 
@@ -94,13 +92,13 @@ async function sendPhoto(chatid: chatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(chatid, {
-      source: readFileSync(photosPath + message.fileName),
+      source: photosPath + message.fileName,
     });
   }
 }
 
 // send document
-async function sendDocument(chatid: chatID, message: Message) {
+async function sendDocument(chatid: ChatID, message: Message) {
   // if not have file, break func!
   if (message.fileName == undefined) return;
 
@@ -110,7 +108,7 @@ async function sendDocument(chatid: chatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       {
@@ -125,7 +123,7 @@ async function sendDocument(chatid: chatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -137,7 +135,7 @@ async function sendDocument(chatid: chatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -147,14 +145,14 @@ async function sendDocument(chatid: chatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_document");
     await bot.telegram.sendDocument(chatid, {
-      source: readFileSync(photosPath + message.fileName),
+      source: photosPath + message.fileName,
       filename: message.fileName,
     });
   }
 }
 
 // send voice
-async function sendVoice(chatid: chatID, message: Message) {
+async function sendVoice(chatid: ChatID, message: Message) {
   // if not have file, break func!
   if (message.fileName == undefined) return;
 
@@ -164,7 +162,7 @@ async function sendVoice(chatid: chatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       {
@@ -179,7 +177,7 @@ async function sendVoice(chatid: chatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -191,7 +189,7 @@ async function sendVoice(chatid: chatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -201,14 +199,14 @@ async function sendVoice(chatid: chatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_voice");
     await bot.telegram.sendAudio(chatid, {
-      source: readFileSync(photosPath + message.fileName),
+      source: photosPath + message.fileName,
       filename: message.fileName,
     });
   }
 }
 
 // send video
-async function sendVideo(chatid: chatID, message: Message) {
+async function sendVideo(chatid: ChatID, message: Message) {
   // if not have file, break func!
   if (message.fileName == undefined) return;
 
@@ -218,7 +216,7 @@ async function sendVideo(chatid: chatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       {
@@ -233,7 +231,7 @@ async function sendVideo(chatid: chatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -245,7 +243,7 @@ async function sendVideo(chatid: chatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: readFileSync(photosPath + message.fileName),
+        source: photosPath + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -255,8 +253,12 @@ async function sendVideo(chatid: chatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_video");
     await bot.telegram.sendVideo(chatid, {
-      source: readFileSync(photosPath + message.fileName),
+      source: photosPath + message.fileName,
       filename: message.fileName,
     });
   }
+}
+
+async function sendMedia() {
+  bot.telegram;
 }

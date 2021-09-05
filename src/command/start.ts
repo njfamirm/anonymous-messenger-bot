@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import { sendMessage } from "../common/sendmessage";
 import bot from "../common/bot";
-import { chatID, Message } from "../common/type";
+import { Message } from "../common/type";
 import { startMenu } from "../common/Menu";
 
 const startMessage: Message = {
@@ -13,12 +13,9 @@ const startMessage: Message = {
 // start command
 async function start(ctx: Context) {
   const user = ctx.from;
-  console.log(user);
-  if (user?.id != undefined) {
-    const chatid: chatID = user.id;
-    await sendMessage(chatid, startMessage);
+  if (user?.id != undefined && ctx.message != undefined) {
+    sendMessage(user.id, startMessage);
   }
 }
 
 bot.command("start", start);
-bot.action("start", start);
