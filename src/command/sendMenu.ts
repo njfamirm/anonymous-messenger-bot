@@ -1,20 +1,26 @@
 import { Context } from "telegraf";
 import bot from "../common/bot";
 import { sendMessage } from "../common/sendmessage";
-import { Message } from "../common/type";
-import { mainMenu } from "../common/Menu";
+import { mainMenuMessage } from "../common/message";
 
-const mainMenuMessage: Message = {
-    type: "text",
-    text: "Hello World!",
-    inlineKeyboard: mainMenu,
-  };
 
-export async function sendMainMenu(ctx: Context) {
-    const user = ctx.from;
-    if (user?.id != undefined && ctx.message != undefined) {
-      sendMessage(user.id, mainMenuMessage);
-    }
+export async function editToMenu(ctx: Context) {
+  if (
+    mainMenuMessage.text != undefined &&
+    mainMenuMessage.inlineKeyboard != undefined
+  ) {
+    ctx.editMessageText(mainMenuMessage.text);
+    ctx.editMessageReplyMarkup({
+      inline_keyboard: mainMenuMessage.inlineKeyboard,
+    });
+  }
 }
 
-bot.command("menu", sendMainMenu)
+export async function sendMenuMessage(ctx: Context) {
+  const user = ctx.from;
+  if (user != undefined) {
+    sendMessage(user.id, mainMenuMessage);
+  }
+}
+
+bot.action("menu", editToMenu);

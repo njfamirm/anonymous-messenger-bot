@@ -1,58 +1,71 @@
 import { Scenes, session } from "telegraf";
 import bot from "../common/bot";
 import { Context } from "telegraf";
-import { Message } from "../common/type";
-import { sendMessage } from "../common/sendmessage";
-import { ReplyMessage } from "../common/type";
-import { sendToAdminMenu, sendedMenu } from "../common/Menu";
+import { sendToAdminMenu, deleteMenu } from "../common/Menu";
+import { pleaseSend, sended, leaveMessage } from "../common/message";
+
 import { adminList } from "../common/data";
-import { sendMainMenu } from "./sendMenu";
+import { sendMenuMessage } from "./sendMenu";
 
-// please send message
-const pleaseSend: Message = {
-  type: "text",
-  text: "please send me...",
-};
-
-// ok mwssage when sended to admin
-const sended: ReplyMessage = {
-  text: "sended",
-  inlineKeyboard: sendedMenu,
-};
-
-// send message to user for user send message
+// edit to please send me your message
 async function getMessage(ctx: Context) {
-  // please send ...
-  const user = ctx.from;
-  if (user?.id != undefined) {
-    sendMessage(user.id, pleaseSend);
-  }
+  if (!(pleaseSend.text != undefined && pleaseSend.inlineKeyboard != undefined))
+    return;
+
+  ctx.editMessageText(pleaseSend.text);
+  ctx.editMessageReplyMarkup({ inline_keyboard: pleaseSend.inlineKeyboard });
 
   return (<any>ctx).wizard.next();
 }
 
+// send copy to admin
+// send ok to user
 async function sendToAdmin(ctx: Context) {
-  const user = ctx.from;
-  if (user?.id != undefined && ctx.message != undefined) {
-    // 1. send to all admin
-    for (const adminChatID of adminList) {
-      bot.telegram.copyMessage(adminChatID, user.id, ctx.message.message_id, {
-        reply_markup: { inline_keyboard: sendToAdminMenu },
-        // TODO
-        // group media!
-      });
-    }
-    // 2. sened | REPLY
-    ctx.reply(sended.text, {
-      reply_to_message_id: ctx.message.message_id,
-      reply_markup: { inline_keyboard: sended.inlineKeyboard },
+  // 1. send to all admin
+  for (const adminChatID of adminList) {
+    ctx.copyMessage(adminChatID, {
+      reply_markup: { inline_keyboard: sendToAdminMenu },
     });
-    // save data in db
-
-    sendMainMenu(ctx);
-
-    return (<any>ctx).scene.leave();
   }
+
+  if (
+    !(
+      sended.text != undefined &&
+      sended.inlineKeyboard != undefined &&
+      ctx.message != undefined
+    )
+  )
+    return;
+  // 2. sened | REPLY
+  ctx.reply(sended.text, {
+    reply_to_message_id: ctx.message.message_id,
+    reply_markup: { inline_keyboard: sended.inlineKeyboard },
+  });
+
+  // save data in db
+
+  return (<any>ctx).scene.leave();
+}
+
+async function sendMenu(ctx: Context) {
+  ctx.editMessageReplyMarkup({ inline_keyboard: deleteMenu });
+  sendMenuMessage(ctx);
+}
+
+// for leave from wizard
+export async function leave(ctx: Context) {
+  if (
+    !(
+      leaveMessage.text != undefined && leaveMessage.inlineKeyboard != undefined
+    )
+  )
+    return;
+
+  ctx.editMessageText(leaveMessage.text);
+  ctx.editMessageReplyMarkup({
+    inline_keyboard: leaveMessage.inlineKeyboard,
+  });
+  return (<any>ctx).scene.leave();
 }
 
 // wizard
@@ -63,6 +76,7 @@ const superWizard = new Scenes.WizardScene(
   getMessage,
   sendToAdmin
 );
+
 const stage = new Scenes.Stage([<any>superWizard]);
 bot.use(session()); // why??
 bot.use(<any>stage.middleware());
@@ -71,3 +85,7 @@ bot.use(<any>stage.middleware());
 bot.action("anonymous", (ctx: any /*Context*/) => {
   ctx.scene.enter("getMessage");
 });
+
+bot.action("sendMenu", sendMenu);
+
+superWizard.action("leave", leave);
