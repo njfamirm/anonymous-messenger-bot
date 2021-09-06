@@ -5,12 +5,10 @@ Telegram bot for contorol anonymous message, for chnnels admins or personal usea
 Features
 ---
 
-- [ ] send anonymous message
-- [ ] auto send to chnnel by confirmation
-- [ ] edit and delete by sender
+- [x] send anonymous message
+- [x] auto send to chnnel by confirmation
+- [ ] delete by sender
 - [ ] delete by admin
 - [ ] reply to sender's message by admin and upside down
-- [ ] send multy message from admin
-- [ ] reply to sender's messsage by him
 
 **We are waiting for your participation!**
