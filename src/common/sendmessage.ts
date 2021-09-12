@@ -1,5 +1,5 @@
-import bot from "./bot";
-import { photosPath } from "./data";
+import { bot } from "./bot";
+import { path } from "../../data/json/config.json";
 import { Message, ChatID } from "./type";
 
 // send message handler
@@ -63,7 +63,7 @@ async function sendPhoto(chatid: ChatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: photosPath + message.fileName },
+      { source: path.photo + message.fileName },
       {
         caption: message.text,
         reply_markup: { inline_keyboard: message.inlineKeyboard },
@@ -75,7 +75,7 @@ async function sendPhoto(chatid: ChatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: photosPath + message.fileName },
+      { source: path.photo + message.fileName },
       { caption: message.text }
     );
 
@@ -84,7 +84,7 @@ async function sendPhoto(chatid: ChatID, message: Message) {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(
       chatid,
-      { source: photosPath + message.fileName },
+      { source: path.photo + message.fileName },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
     );
 
@@ -92,7 +92,7 @@ async function sendPhoto(chatid: ChatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_photo");
     await bot.telegram.sendPhoto(chatid, {
-      source: photosPath + message.fileName,
+      source: path.photo + message.fileName,
     });
   }
 }
@@ -108,7 +108,7 @@ async function sendDocument(chatid: ChatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.document + message.fileName,
         filename: message.fileName,
       },
       {
@@ -123,7 +123,7 @@ async function sendDocument(chatid: ChatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.document + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -135,7 +135,7 @@ async function sendDocument(chatid: ChatID, message: Message) {
     await bot.telegram.sendDocument(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.document + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -145,7 +145,7 @@ async function sendDocument(chatid: ChatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_document");
     await bot.telegram.sendDocument(chatid, {
-      source: photosPath + message.fileName,
+      source: path.document + message.fileName,
       filename: message.fileName,
     });
   }
@@ -162,7 +162,7 @@ async function sendVoice(chatid: ChatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.voice + message.fileName,
         filename: message.fileName,
       },
       {
@@ -177,7 +177,7 @@ async function sendVoice(chatid: ChatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.voice + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -189,7 +189,7 @@ async function sendVoice(chatid: ChatID, message: Message) {
     await bot.telegram.sendAudio(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.voice + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -199,7 +199,7 @@ async function sendVoice(chatid: ChatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_voice");
     await bot.telegram.sendAudio(chatid, {
-      source: photosPath + message.fileName,
+      source: path.voice + message.fileName,
       filename: message.fileName,
     });
   }
@@ -216,7 +216,7 @@ async function sendVideo(chatid: ChatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.video + message.fileName,
         filename: message.fileName,
       },
       {
@@ -231,7 +231,7 @@ async function sendVideo(chatid: ChatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.video + message.fileName,
         filename: message.fileName,
       },
       { caption: message.text }
@@ -243,7 +243,7 @@ async function sendVideo(chatid: ChatID, message: Message) {
     await bot.telegram.sendVideo(
       chatid,
       {
-        source: photosPath + message.fileName,
+        source: path.video + message.fileName,
         filename: message.fileName,
       },
       { reply_markup: { inline_keyboard: message.inlineKeyboard } }
@@ -253,12 +253,8 @@ async function sendVideo(chatid: ChatID, message: Message) {
   } else {
     await bot.telegram.sendChatAction(chatid, "upload_video");
     await bot.telegram.sendVideo(chatid, {
-      source: photosPath + message.fileName,
+      source: path.video + message.fileName,
       filename: message.fileName,
     });
   }
-}
-
-async function sendMedia() {
-  bot.telegram;
 }

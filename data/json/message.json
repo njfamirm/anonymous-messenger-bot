@@ -1,6 +1,105 @@
 {
   "start": {
-    "message": "Hello!",
-    "inlieKeyword": [["test1", "data1"], ["test2", "data2"]]
+    "text": "start",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "send anonymous",
+          "callback_data": "anonymous"
+        }
+      ]
+    ]
+  },
+  "pleaseSend": {
+    "text": "please send",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "leave",
+          "callback_data": "leave"
+        }
+      ]
+    ]
+  },
+  "sended": {
+    "text": "sended to admin",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "delete",
+          "callback_data": "delete"
+        },
+        {
+          "text": "menu",
+          "callback_data": "sendMenu"
+        }
+      ]
+    ]
+  },
+  "leave": {
+    "text": "leaved",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "back to menu",
+          "callback_data": "menu"
+        }
+      ]
+    ]
+  },
+  "menu": {
+    "text": "menu",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "send anonymous",
+          "callback_data": "anonymous"
+        }
+      ]
+    ]
+  },
+  "sendToAdmin": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "reply",
+          "callback_data": "reply"
+        },
+        {
+          "text": "send to channel",
+          "callback_data": "sendToChannel"
+        }
+      ]
+    ]
+  },
+  "sendedToChannel": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "reply",
+          "callback_data": "reply"
+        }
+      ]
+    ]
+  },
+  "deletemenu": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "delete",
+          "callback_data": "delete"
+        }
+      ]
+    ]
+  },
+  "sendMenu": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "menu",
+          "callback_data": "sendMenu"
+        }
+      ]
+    ]
   }
 }

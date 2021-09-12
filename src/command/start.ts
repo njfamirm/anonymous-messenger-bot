@@ -1,9 +1,9 @@
 import { Context } from "telegraf";
 import { sendMessage } from "../common/sendmessage";
-import bot from "../common/bot";
+import { bot } from "../common/bot";
 import { startMessage } from "../common/message";
 
-// start command
+// send start message
 async function start(ctx: Context) {
   const user = ctx.from;
   if (user?.id != undefined && ctx.message != undefined) {

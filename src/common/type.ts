@@ -1,5 +1,5 @@
-import { InlineKeyboardButton } from "typegram";
-import { DocumentRecord } from "@alimd/1db/src/index";
+import { InlineKeyboardButton, InlineKeyboardMarkup } from "typegram";
+import { DocumentRecord } from "../db/1db";
 
 // for all message type
 export interface Message {
@@ -14,11 +14,18 @@ export interface Message {
 
   text?: string;
   fileName?: string;
-  inlineKeyboard?: Menu;
+  inlineKeyboard?: InlineKeyboardButton[][];
 }
 
-// user chat id
+// user chat id | username
 export type ChatID = number | string;
 
 // inlinekeyboard
 export type Menu = InlineKeyboardButton[][];
+
+// message ids
+export interface messageSendedId extends DocumentRecord {
+  replyMessageId: number;
+  admin: Array<Array<number>>;
+  userChatId: number;
+}

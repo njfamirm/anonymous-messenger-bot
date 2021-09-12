@@ -1,3 +1,10 @@
 import { Telegraf } from "telegraf";
-const token: string = "1999238789:AAFnZIc9QyOAtoRnU8wDrUcaOOISrNFMpCU";
-export default new Telegraf(token);
+import log from "./log";
+
+const token = process.env.token;
+
+if (token === undefined) {
+  log("token is required");
+  process.exit(1);
+}
+export const bot = new Telegraf(token);
