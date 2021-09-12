@@ -1,15 +1,58 @@
 # Telegram anonymous message bot
 
-Anonymous messaging bot for channels or for personal use!
+> Anonymous messaging bot for channels or for personal use!
 
-## Features
+### Features
 
-- [x] send anonymous message
-- [x] auto send to chnnel by confirmation
+- [ ] send anonymous message
+- [ ] auto send to channel by confirmation
 - [ ] delete by sender
 - [ ] reply to sender's message by admin and upside down
+- [ ] flexiable message
+- [ ] flexiable setting
 
-### Todo
+---
+
+## Usage
+
+set token <sub>get from [bot father](https://t.me/BotFather)</sub>
+
+```
+export token=TOKEN
+```
+
+install dependencies
+
+```
+yarn
+```
+
+build and run
+
+```
+yarn start
+```
+
+<details>
+  <summary>other commands</summary>
+<p>
+  
+  build
+  ```
+  yarn build
+  ```
+  run
+  ```
+  yarn runCode
+  ```
+</p>
+</details>
+
+---
+
+#### Todo
+
+> > > > > > > 021a60351b804fb9fb91d83c1c9f2da760a262ad
 
 - reply
 - log
