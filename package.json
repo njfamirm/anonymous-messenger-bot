@@ -7,18 +7,19 @@
   "author": "njfamirm <njfamirm@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@alimd/1db": "^2.0.0-beta.3",
-    "@types/debug": "^4.1.7",
-    "@types/lodash.debounce": "^4.0.6",
-    "@types/node": "^16.7.10",
-    "debug": "^4.3.2",
-    "lodash": "^4.17.21",
-    "lodash.debounce": "^4.0.8",
+    "debug": "^4.3.1",
+    "lodash": "^4.17.20",
+    "postgraphile": "^4.12.3",
     "telegraf": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/lodash": "^4.14.166",
+    "@types/node": "^14.14.16"
   },
   "scripts": {
     "build": "tsc",
-    "runCode": "node dist/index.js",
-    "start": "yarn build && yarn runCode"
+    "serve": "node dist/index.js",
+    "start": "yarn build && yarn serve"
   }
 }

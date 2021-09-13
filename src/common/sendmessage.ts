@@ -1,6 +1,7 @@
-import { bot } from "./bot";
+import bot from "./bot";
 import { path } from "../../data/json/config.json";
 import { Message, ChatID } from "./type";
+import log from "./log";
 
 // send message handler
 export async function sendMessage(chatid: ChatID, message: Message) {
@@ -33,7 +34,7 @@ export async function sendMessage(chatid: ChatID, message: Message) {
     // ** TODO **//
 
     default:
-      console.log("not supported!");
+      log("not supported!");
   }
 }
 

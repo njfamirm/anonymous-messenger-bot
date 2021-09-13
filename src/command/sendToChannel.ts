@@ -1,4 +1,4 @@
-import { bot } from "../common/bot";
+import bot from "../common/bot";
 import { Context } from "telegraf";
 import { deleteMessageId } from "../common/saveMeessageId";
 

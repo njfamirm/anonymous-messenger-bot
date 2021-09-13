@@ -1,12 +1,11 @@
 import { Scenes, session } from "telegraf";
-import { bot } from "../common/bot";
+import bot from "../common/bot";
 import { Context } from "telegraf";
 import {
   pleaseSendMessage,
   sendedMessage,
   leaveMessage,
   sendToAdminMenu,
-  deleteMenu,
 } from "../common/message";
 
 import { admins } from "../../data/json/config.json";
@@ -15,7 +14,7 @@ import log from "../common/log";
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
-async function getMessage(ctx: Context) {
+export async function getMessage(ctx: Context) {
   if (
     !(
       pleaseSendMessage.text != undefined &&
@@ -97,10 +96,10 @@ export async function leave(ctx: Context) {
     return;
   }
 
-  ctx.editMessageText(leaveMessage.text);
-  ctx.editMessageReplyMarkup({
-    inline_keyboard: leaveMessage.inlineKeyboard,
+  ctx.editMessageText(leaveMessage.text, {
+    reply_markup: { inline_keyboard: leaveMessage.inlineKeyboard },
   });
+
   return (<any>ctx).scene.leave();
 }
 

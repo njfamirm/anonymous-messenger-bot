@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { OneDB } from "../db/1db";
-import { bot } from "./bot";
+import bot from "./bot";
 import { sendedToChannelMenu, sendMenuMenu } from "./message";
 import { messageSendedId } from "./type";
 

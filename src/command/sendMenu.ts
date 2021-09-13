@@ -1,5 +1,5 @@
 import { Context } from "telegraf";
-import { bot } from "../common/bot";
+import bot from "../common/bot";
 import { sendMessage } from "../common/sendmessage";
 import { mainMenuMessage } from "../common/message";
 
