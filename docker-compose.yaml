@@ -1,0 +1,9 @@
+version: "3.8"
+
+services: 
+
+  bot:
+    context: .
+    image: ./build/Docerfile
+    environment: 
+      - TOKEN=$TOKEN

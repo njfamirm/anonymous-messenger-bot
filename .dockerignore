@@ -1,0 +1,5 @@
+# dependencies
+node_modules/
+
+# ts compiled to js
+dist/
