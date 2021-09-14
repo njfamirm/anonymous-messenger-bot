@@ -1,9 +1,9 @@
 version: "3.8"
 
-services: 
-
+services:
   bot:
-    context: .
-    image: ./build/Docerfile
-    environment: 
+    build:
+      context: .
+      image: ./build/Docerfile
+    environment:
       - TOKEN=$TOKEN
