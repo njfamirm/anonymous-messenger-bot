@@ -4,6 +4,6 @@ services:
   bot:
     build:
       context: .
-      image: ./build/Docerfile
+      dockerfile: ./build/Dockerfile
     environment:
       - TOKEN=$TOKEN

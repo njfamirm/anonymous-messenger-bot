@@ -11,4 +11,3 @@ RUN yarn
 
 #start project
 CMD ["yarn", "serve"]
-
