@@ -1,6 +1,6 @@
 # Telegram anonymous message bot
 
-> Anonymous messaging bot for channels or for personal use!
+> Anonymous messaging bot for channels
 
 ### Features
 
