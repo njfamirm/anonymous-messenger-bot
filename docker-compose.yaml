@@ -17,11 +17,11 @@ services:
       dockerfile: ./build/Dockerfile
     environment:
       - TOKEN=$TOKEN
-      - POSTGRES_PASSWORD=POSTGRES
-      - POSTGRES_DB=POSTGRES
-      - POSTGRES_USER=POSTGRES
-      - POSTGRES_HOST=POSTGRES
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
 
     depends_on:
-      - db
+      - postgres
