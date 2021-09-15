@@ -1,5 +1,5 @@
 import { InlineKeyboardButton, InlineKeyboardMarkup } from "typegram";
-import { DocumentRecord } from "../db/1db";
+import { DocumentRecord } from "../1db/1db";
 
 // for all message type
 export interface Message {
@@ -28,4 +28,12 @@ export interface messageSendedId extends DocumentRecord {
   replyMessageId: number;
   admin: Array<Array<number>>;
   userChatId: number;
+}
+
+export interface messageIds {
+  userChatId: number;
+  mainMessageId: number;
+  replyMessageId: number;
+  adminChatIds: Array<number>;
+  adminMessageIds: Array<number>;
 }

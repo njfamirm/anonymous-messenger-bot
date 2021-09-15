@@ -1,7 +1,5 @@
 {
-  "config": {
-    "token": ""
-  },
+  "db": {},
   "admins": {
     "chatIds": [716375794]
   },

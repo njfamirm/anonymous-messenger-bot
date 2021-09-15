@@ -28,10 +28,6 @@
         {
           "text": "delete",
           "callback_data": "delete"
-        },
-        {
-          "text": "menu",
-          "callback_data": "sendMenu"
         }
       ]
     ]
@@ -98,6 +94,17 @@
         {
           "text": "menu",
           "callback_data": "sendMenu"
+        }
+      ]
+    ]
+  },
+  "deleted": "deleted",
+  "reply": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "reply",
+          "callback_data": "reply"
         }
       ]
     ]

@@ -3,3 +3,6 @@ node_modules/
 
 # ts compiled to js
 dist/
+
+# data
+data/user.json

@@ -9,8 +9,9 @@ import {
 } from "../common/message";
 
 import { admins } from "../../data/json/config.json";
-import { saveMessageId } from "../common/saveMeessageId";
+import { saveMessageIdsDB } from "../db/save";
 import log from "../common/log";
+import { messageIds } from "../common/type";
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
@@ -37,14 +38,15 @@ export async function getMessage(ctx: Context) {
 // 3. save message id in db
 async function sendToAdmin(ctx: Context) {
   // get message id and message id | admins & user
-  var admin: Array<Array<number>> = [];
+  var adminChatIds: Array<number> = [];
+  var adminMessageIds: Array<number> = [];
   if (ctx.from === undefined || ctx.message === undefined) return;
   const mainMessageId: number = ctx.message.message_id;
   const userChatId: number = ctx.from.id;
 
   // 1. send copy to admins
   for (const adminChatID of admins.chatIds) {
-    var mesageId = await ctx.copyMessage(adminChatID, {
+    var messageId = await ctx.copyMessage(adminChatID, {
       reply_markup: { inline_keyboard: sendToAdminMenu },
     });
 
@@ -53,7 +55,8 @@ async function sendToAdmin(ctx: Context) {
       log("Error in get admin chat id | send anonymous breaked");
       return;
     }
-    admin.push([ctx.from.id, mesageId.message_id]);
+    adminChatIds.push(adminChatID);
+    adminMessageIds.push(messageId.message_id);
   }
 
   if (
@@ -74,13 +77,14 @@ async function sendToAdmin(ctx: Context) {
   });
 
   // 3. save messageid in database
-  var messagesids = {
-    mainMessageId: mainMessageId,
+  var messagesids: messageIds = {
+    mainMessageId: ctx.message.message_id,
     replyMessageId: replyMessageId.message_id,
-    admin: admin,
+    adminChatIds: adminChatIds,
+    adminMessageIds: adminMessageIds,
     userChatId: userChatId,
   };
-  saveMessageId(messagesids);
+  saveMessageIdsDB(messagesids);
 
   return (<any>ctx).scene.leave();
 }
