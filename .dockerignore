@@ -6,3 +6,6 @@ dist/
 
 # data
 data/user.json
+
+# .git
+.git

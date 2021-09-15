@@ -9,5 +9,8 @@ COPY . .
 # install dependencies
 RUN yarn
 
+# build ts
+RUN yarn build
+
 #start project
 CMD ["yarn", "serve"]
