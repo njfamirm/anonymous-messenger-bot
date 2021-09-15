@@ -9,11 +9,11 @@ export async function saveMessageIdsDB(messageIds: messageIds) {
   const saveMessageIds: QueryConfig = {
     text: saveMessageIdsQuery,
     values: [
-      messageIds.userChatId,
+      messageIds.senderChatId,
       messageIds.mainMessageId,
       messageIds.replyMessageId,
-      messageIds.adminChatIds,
-      messageIds.adminMessageIds,
+      messageIds.reciverChatIds,
+      messageIds.reciverMessageIds,
     ],
   };
 

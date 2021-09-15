@@ -31,9 +31,9 @@ export interface messageSendedId extends DocumentRecord {
 }
 
 export interface messageIds {
-  userChatId: number;
+  senderChatId: number;
   mainMessageId: number;
   replyMessageId: number;
-  adminChatIds: Array<number>;
-  adminMessageIds: Array<number>;
+  reciverChatIds: Array<number>;
+  reciverMessageIds: Array<number>;
 }

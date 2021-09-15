@@ -1,54 +1,54 @@
 {
   "start": {
-    "text": "start",
+    "text": "سلام به بات شائق خوش اومدی (:",
     "inlineKeyboard": [
       [
         {
-          "text": "send anonymous",
+          "text": "ارسال پیام ناشناس",
           "callback_data": "anonymous"
         }
       ]
     ]
   },
   "pleaseSend": {
-    "text": "please send",
+    "text": "لطفا پیام را ارسال کن تا به صورت ناشناس برای ادمین بفرستم",
     "inlineKeyboard": [
       [
         {
-          "text": "leave",
+          "text": "لغو",
           "callback_data": "leave"
         }
       ]
     ]
   },
   "sended": {
-    "text": "sended to admin",
+    "text": "ارسالش کردم",
     "inlineKeyboard": [
       [
         {
-          "text": "delete",
+          "text": "حذف",
           "callback_data": "delete"
         }
       ]
     ]
   },
   "leave": {
-    "text": "leaved",
+    "text": "لغو شد",
     "inlineKeyboard": [
       [
         {
-          "text": "back to menu",
+          "text": "ارسال منو",
           "callback_data": "menu"
         }
       ]
     ]
   },
   "menu": {
-    "text": "menu",
+    "text": "بفرما اینم منو...",
     "inlineKeyboard": [
       [
         {
-          "text": "send anonymous",
+          "text": "ارسال پیام ناشناس",
           "callback_data": "anonymous"
         }
       ]
@@ -58,11 +58,11 @@
     "inlineKeyboard": [
       [
         {
-          "text": "reply",
+          "text": "پاسخ",
           "callback_data": "reply"
         },
         {
-          "text": "send to channel",
+          "text": "ارسال به کانال",
           "callback_data": "sendToChannel"
         }
       ]
@@ -72,7 +72,7 @@
     "inlineKeyboard": [
       [
         {
-          "text": "reply",
+          "text": "پاسخ",
           "callback_data": "reply"
         }
       ]
@@ -82,7 +82,7 @@
     "inlineKeyboard": [
       [
         {
-          "text": "delete",
+          "text": "حذف",
           "callback_data": "delete"
         }
       ]
@@ -92,21 +92,22 @@
     "inlineKeyboard": [
       [
         {
-          "text": "menu",
+          "text": "ارسال منو",
           "callback_data": "sendMenu"
         }
       ]
     ]
   },
-  "deleted": "deleted",
-  "reply": {
+  "deleted": "حذف شد",
+  "replyToUser": {
     "inlineKeyboard": [
       [
         {
-          "text": "reply",
+          "text": "پاسخ",
           "callback_data": "reply"
         }
       ]
     ]
-  }
+  },
+  "leaved": "leaved"
 }

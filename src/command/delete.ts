@@ -8,7 +8,7 @@ import { QueryConfig, QueryResult } from "pg";
 import { pool } from "../db/config";
 import { deleted } from "../../data/json/message.json";
 import log from "../common/log";
-import { replyMenu } from "../common/message";
+import { replyUserMenu } from "../common/message";
 
 // delete message sent from user to admins by user
 // delete delete inline keyboard
@@ -62,16 +62,16 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
 // and delete messages from admin
 function deleteFromAdmin(messageIds: any) {
   // 1. delete message sent to admin
-  for (var i = 0; i < messageIds.adminchatids.length; i++) {
+  for (var i = 0; i < messageIds.reciverchatids.length; i++) {
     bot.telegram.deleteMessage(
-      messageIds.adminchatids[i],
-      messageIds.adminmessageids[i]
+      messageIds.reciverchatids[i],
+      messageIds.recivermessageids[i]
     );
   }
 
   // 2. delete replyed inline keyboard
   bot.telegram.editMessageText(
-    messageIds.userchatid,
+    messageIds.senderchatid,
     messageIds.replymessageid,
     undefined,
     deleted,
@@ -82,18 +82,18 @@ function deleteFromAdmin(messageIds: any) {
 // delete
 function deleteFromUser(messageIds: any) {
   // 1. delete message sent to admin
-  for (var i = 0; i < messageIds.adminchatids.length; i++) {
+  for (var i = 0; i < messageIds.reciverchatids.length; i++) {
     bot.telegram.editMessageReplyMarkup(
-      messageIds.adminchatids[i],
-      messageIds.adminmessageids[i],
+      messageIds.reciverchatids[i],
+      messageIds.recivermessageids[i],
       undefined,
-      { inline_keyboard: replyMenu }
+      { inline_keyboard: replyUserMenu }
     );
   }
 
   // 2. delete replyed inline keyboard
   bot.telegram.editMessageReplyMarkup(
-    messageIds.userchatid,
+    messageIds.senderchatid,
     messageIds.replymessageid,
     undefined,
     { inline_keyboard: [] }

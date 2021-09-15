@@ -1,6 +1,7 @@
 {
-  "createTableQuery": "CREATE TABLE IF NOT EXISTS telegramBot (userChatid INT NOT NULL,mainMessage INT NOT NULL, replyMessageId INT NOT NULL, adminChatIds INT [] NOT NULL, adminMessageIds INT [] NOT NULL)",
-  "saveMessageIdsQuery": "INSERT INTO telegramBot(userChatid, mainMessage, replyMessageId, adminChatIds, adminMessageIds) VALUES ($1, $2, $3, $4, $5)",
-  "findMessageIdByUserQuery": "DELETE FROM telegramBot WHERE userChatid = $1 AND replyMessageId = $2 RETURNING *",
-  "findMessageIdByAdminQuery": "DELETE FROM telegramBot WHERE $1 = ANY(adminChatIds) AND $2 = ANY(adminMessageIds) RETURNING *"
+  "createTableQuery": "CREATE TABLE IF NOT EXISTS telegramBot (senderChatid INT NOT NULL,mainMessageId INT NOT NULL, replyMessageId INT NOT NULL, reciverChatIds INT [] NOT NULL, reciverMessageIds INT [] NOT NULL)",
+  "saveMessageIdsQuery": "INSERT INTO telegramBot(senderChatid, mainMessageId, replyMessageId, reciverChatIds, reciverMessageIds) VALUES ($1, $2, $3, $4, $5)",
+  "findMessageIdByUserQuery": "SELECT * FROM telegramBot WHERE senderChatid = $1 AND replyMessageId = $2",
+  "findUserChatIdByAdminQuery": "SELECT senderChatid, mainMessageId FROM telegramBot WHERE $1 = ANY(reciverChatIds) AND $2 = ANY(reciverMessageIds)",
+  "findMessageIdByAdminQuery": "SELECT * FROM telegramBot WHERE $1 = ANY(reciverChatIds) AND $2 = ANY(reciverMessageIds)"
 }

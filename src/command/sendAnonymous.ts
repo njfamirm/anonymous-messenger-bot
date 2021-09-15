@@ -25,9 +25,11 @@ export async function getMessage(ctx: Context) {
     return;
 
   // 1. edit to please send me your message
-  await ctx.editMessageText(pleaseSendMessage.text, {
+  const replyedMessage = await ctx.editMessageText(pleaseSendMessage.text, {
     reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
   });
+
+  (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
 
   // 2. wait to user send message...
   return (<any>ctx).wizard.next();
@@ -37,11 +39,20 @@ export async function getMessage(ctx: Context) {
 // 2. send ok to user
 // 3. save message id in db
 async function sendToAdmin(ctx: Context) {
+  if (ctx.from === undefined || ctx.message === undefined) return;
+
+  // delete last message inline keyboard
+  const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
+  bot.telegram.editMessageReplyMarkup(
+    ctx.from.id,
+    replyMessage.message_id,
+    undefined,
+    { inline_keyboard: [] }
+  );
+
   // get message id and message id | admins & user
   var adminChatIds: Array<number> = [];
   var adminMessageIds: Array<number> = [];
-  if (ctx.from === undefined || ctx.message === undefined) return;
-  const mainMessageId: number = ctx.message.message_id;
   const userChatId: number = ctx.from.id;
 
   // 1. send copy to admins
@@ -80,9 +91,9 @@ async function sendToAdmin(ctx: Context) {
   var messagesids: messageIds = {
     mainMessageId: ctx.message.message_id,
     replyMessageId: replyMessageId.message_id,
-    adminChatIds: adminChatIds,
-    adminMessageIds: adminMessageIds,
-    userChatId: userChatId,
+    reciverChatIds: adminChatIds,
+    reciverMessageIds: adminMessageIds,
+    senderChatId: userChatId,
   };
   saveMessageIdsDB(messagesids);
 
@@ -111,7 +122,7 @@ export async function leave(ctx: Context) {
 // 1. get message
 // 2. send them to admin 3. reply to user message => ok
 const superWizard = new Scenes.WizardScene(
-  "getMessage",
+  "anonymous",
   getMessage,
   sendToAdmin
 );
@@ -122,7 +133,7 @@ bot.use(<any>stage.middleware());
 
 // anonymous button on menu
 bot.action("anonymous", (ctx: any /*Context*/) => {
-  ctx.scene.enter("getMessage");
+  ctx.scene.enter("anonymous");
 });
 
 superWizard.action("leave", leave);

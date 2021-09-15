@@ -9,7 +9,7 @@ import {
   sendToAdmin,
   deletemenu,
   sendedToChannel,
-  reply,
+  replyToUser,
 } from "../../data/json/message.json";
 
 export const startMessage: Message = {
@@ -43,4 +43,5 @@ export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;
 export const deleteMenu: Menu = deletemenu.inlineKeyboard;
 export const sendedToChannelMenu: Menu = sendedToChannel.inlineKeyboard;
 export const sendMenuMenu: Menu = sendMenu.inlineKeyboard;
-export const replyMenu: Menu = reply.inlineKeyboard;
+export const replyUserMenu: Menu = replyToUser.inlineKeyboard;
+export const replyMenu: Menu = replyToUser.inlineKeyboard;
