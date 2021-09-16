@@ -1,13 +1,12 @@
 {
-  "db": {},
-  "admins": {
-    "chatIds": [716375794]
-  },
+  "adminsChatIds": [716375794],
   "path": {
     "photo": "./data/photo/",
     "video": "./data/video/",
     "voice": "./data/voice/",
     "document": "./data/document/",
     "json": "./data/json/"
-  }
+  },
+  "channelID": "njfamirm256",
+  "_latest": "adminsChatIds"
 }

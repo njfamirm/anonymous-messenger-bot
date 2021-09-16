@@ -8,7 +8,7 @@ import {
   sendToAdminMenu,
 } from "../common/message";
 
-import { admins } from "../../data/json/config.json";
+import { adminsChatIds } from "../../data/json/config.json";
 import { saveMessageIdsDB } from "../db/save";
 import log from "../common/log";
 import { messageIds } from "../common/type";
@@ -56,11 +56,10 @@ async function sendToAdmin(ctx: Context) {
   const userChatId: number = ctx.from.id;
 
   // 1. send copy to admins
-  for (const adminChatID of admins.chatIds) {
+  for (const adminChatID of adminsChatIds) {
     var messageId = await ctx.copyMessage(adminChatID, {
       reply_markup: { inline_keyboard: sendToAdminMenu },
     });
-
     // get message id and chat id | admins
     if (ctx.from === undefined) {
       log("Error in get admin chat id | send anonymous breaked");
@@ -80,7 +79,6 @@ async function sendToAdmin(ctx: Context) {
     log("Error in send ok to user");
     return;
   }
-
   // 2. sened ok | REPLY
   const replyMessageId = await ctx.reply(sendedMessage.text, {
     reply_to_message_id: ctx.message.message_id,
