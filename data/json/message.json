@@ -25,6 +25,17 @@
       ]
     ]
   },
+  "pleaseSendReply": {
+    "text": "لطفا پیام را ارسال کن تا به صورت ناشناس بفرستم",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "لغو",
+          "callback_data": "leave"
+        }
+      ]
+    ]
+  },
   "sended": {
     "text": "ارسالش کردم",
     "inlineKeyboard": [
@@ -41,7 +52,7 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال منو",
+          "text": "منو",
           "callback_data": "menu"
         }
       ]
@@ -81,7 +92,7 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال منو",
+          "text": "بازگشت",
           "callback_data": "menu"
         }
       ]
@@ -111,7 +122,7 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال منو",
+          "text": "منو",
           "callback_data": "sendMenu"
         }
       ]
@@ -129,5 +140,6 @@
   },
   "deleted": "حذف شد",
   "leaved": "خارج شد",
-  "updated": "لیست ادمین ها آپدیت شد!"
+  "updated": "لیست ادمین ها آپدیت شد!",
+  "inCorrect": "این پیام نیستا!"
 }

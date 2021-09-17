@@ -8,5 +8,5 @@
     "json": "./data/json/"
   },
   "channelID": "njfamirm256",
-  "_latest": "adminsChatIds"
+  "commands": ["/start", "/menu", "/anonymous", "/help"]
 }

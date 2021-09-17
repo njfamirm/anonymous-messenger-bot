@@ -11,6 +11,7 @@ import {
   sendedToChannel,
   replyToUser,
   help,
+  pleaseSendReply,
 } from "../../data/json/message.json";
 
 export const startMessage: Message = {
@@ -21,6 +22,11 @@ export const startMessage: Message = {
 export const pleaseSendMessage: Message = {
   text: pleaseSend.text,
   inlineKeyboard: pleaseSend.inlineKeyboard,
+};
+
+export const pleaseSendReplyMessage: Message = {
+  text: pleaseSendReply.text,
+  inlineKeyboard: pleaseSendReply.inlineKeyboard,
 };
 
 export const sendedMessage: Message = {

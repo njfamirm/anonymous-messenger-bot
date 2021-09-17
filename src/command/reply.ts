@@ -1,28 +1,28 @@
 import { Context, session, Scenes } from "telegraf";
 import bot from "../common/bot";
-import { pleaseSendMessage, replyMenu } from "../common/message";
+import { pleaseSendReplyMessage, replyMenu } from "../common/message";
 import { sendedMessage, deleteMenu } from "../common/message";
 import { pool } from "../db/config";
 import { findUserChatIdByAdminQuery } from "../../data/json/databaseQuery.json";
 import { QueryConfig, QueryResult } from "pg";
 import { messageIds } from "../common/type";
 import { saveMessageIdsDB } from "../db/save";
-import { leave } from "./leave";
+import { leaveEditMessage } from "./leave";
 import log from "../common/log";
 
 // get message
 async function getMessage(ctx: Context) {
   if (
     !(
-      pleaseSendMessage.text != undefined &&
-      pleaseSendMessage.inlineKeyboard != undefined
+      pleaseSendReplyMessage.text != undefined &&
+      pleaseSendReplyMessage.inlineKeyboard != undefined
     )
   )
     return;
 
   // 1. edit to please send me your message
-  const replyedMessage = await ctx.reply(pleaseSendMessage.text, {
-    reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+  const replyedMessage = await ctx.reply(pleaseSendReplyMessage.text, {
+    reply_markup: { inline_keyboard: pleaseSendReplyMessage.inlineKeyboard },
     reply_to_message_id: (<any>ctx).update.callback_query.message.message_id,
   });
 
@@ -109,4 +109,4 @@ bot.action("reply", (ctx: Context) => {
   (<any>ctx).scene.enter("Reply");
 });
 
-superWizard.action("leave", leave);
+superWizard.action("leave", leaveEditMessage);

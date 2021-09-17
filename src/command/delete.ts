@@ -60,7 +60,6 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
 }
 
 function deleteFromReciver(messageIds: any) {
-  console.log(messageIds);
   // 1. delete message sent to admin
   for (var i = 0; i < messageIds.reciverchatids.length; i++) {
     bot.telegram.editMessageReplyMarkup(

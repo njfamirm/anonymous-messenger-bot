@@ -5,7 +5,6 @@ import { userDB } from "../db/json/db";
 
 // send start message
 async function start(ctx: Context) {
-  const user = ctx.from;
   if (
     startMessage.text === undefined ||
     startMessage.inlineKeyboard === undefined

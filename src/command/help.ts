@@ -2,7 +2,7 @@ import { Context } from "telegraf";
 import bot from "../common/bot";
 import { helpMessage, startMessage } from "../common/message";
 
-async function SendHelp(ctx: Context) {
+export async function SendHelp(ctx: Context) {
   if (
     helpMessage.text === undefined ||
     helpMessage.inlineKeyboard === undefined ||

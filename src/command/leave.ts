@@ -3,7 +3,7 @@ import { leaveMessage } from "../common/message";
 import log from "../common/log";
 
 // for leave from wizard
-export async function leave(ctx: Context) {
+export async function leaveEditMessage(ctx: Context) {
   if (
     !(
       leaveMessage.text != undefined && leaveMessage.inlineKeyboard != undefined
@@ -17,5 +17,9 @@ export async function leave(ctx: Context) {
     reply_markup: { inline_keyboard: leaveMessage.inlineKeyboard },
   });
 
+  return (<any>ctx).scene.leave();
+}
+
+export async function leave(ctx: Context) {
   return (<any>ctx).scene.leave();
 }

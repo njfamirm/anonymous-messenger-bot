@@ -1,4 +1,4 @@
-import { Scenes, session } from "telegraf";
+import { Scenes, session, Composer } from "telegraf";
 import bot from "../common/bot";
 import { Context } from "telegraf";
 import {
@@ -6,16 +6,37 @@ import {
   sendedMessage,
   sendToAdminMenu,
 } from "../common/message";
-import { leave } from "./leave";
-
-import { adminsChatIds } from "../../data/json/config.json";
+import { leaveEditMessage, leave } from "./leave";
+import { adminsChatIds, commands } from "../../data/json/config.json";
+import { inCorrect } from "../../data/json/message.json";
 import { saveMessageIdsDB } from "../db/save";
-import log from "../common/log";
 import { messageIds } from "../common/type";
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
-export async function getMessage(ctx: Context) {
+async function getMessageEdit(ctx: Context) {
+  if (
+    !(
+      pleaseSendMessage.text != undefined &&
+      pleaseSendMessage.inlineKeyboard != undefined
+    )
+  ) {
+    leave(ctx);
+    return;
+  }
+
+  // 1. edit to please send me your message
+  const replyedMessage = await ctx.editMessageText(pleaseSendMessage.text, {
+    reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+  });
+
+  (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
+
+  // 2. wait to user send message...
+  return (<any>ctx).wizard.next();
+}
+
+async function getMessageSend(ctx: Context) {
   if (
     !(
       pleaseSendMessage.text != undefined &&
@@ -25,8 +46,9 @@ export async function getMessage(ctx: Context) {
     return;
 
   // 1. edit to please send me your message
-  const replyedMessage = await ctx.editMessageText(pleaseSendMessage.text, {
+  const replyedMessage = await ctx.reply(pleaseSendMessage.text, {
     reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+    reply_to_message_id: ctx.message?.message_id,
   });
 
   (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
@@ -40,6 +62,23 @@ export async function getMessage(ctx: Context) {
 // 3. save message id in db
 async function sendToAdmin(ctx: Context) {
   if (ctx.from === undefined) return;
+
+  // if message have command
+  if (commands.includes((<any>ctx).message.text)) {
+    leave(ctx);
+    ctx.reply(inCorrect, { reply_to_message_id: ctx.message?.message_id });
+
+    // delete inline keyboard last message
+    const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
+    bot.telegram.editMessageReplyMarkup(
+      ctx.from.id,
+      replyMessage.message_id,
+      undefined,
+      { inline_keyboard: [] }
+    );
+
+    return;
+  }
 
   // 1. delete last message inline keyboard
   const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
@@ -98,26 +137,32 @@ async function saveMessageIds(
     reciverMessageIds: adminMessageIds,
     senderChatId: ctx.from.id,
   };
-  console.log(messagesids);
   saveMessageIdsDB(messagesids);
 }
 
+const getMessage = new Composer<Scenes.WizardContext>();
+
+getMessage.action("anonymous", (ctx) => {
+  getMessageEdit(ctx);
+});
+
+getMessage.command("anonymous", (ctx) => {
+  getMessageSend(ctx);
+});
+
 // wizard
-// 1. get message
-// 2. send them to admin 3. reply to user message => ok
 const superWizard = new Scenes.WizardScene(
   "anonymous",
   getMessage,
   sendToAdmin
 );
 
-const stage = new Scenes.Stage([<any>superWizard]);
-bot.use(session()); // why??
-bot.use(<any>stage.middleware());
-
-// anonymous button on menu
-bot.action("anonymous", (ctx: any /*Context*/) => {
-  ctx.scene.enter("anonymous");
+const stage = new Scenes.Stage<Scenes.WizardContext>([superWizard], {
+  default: "anonymous",
 });
 
-superWizard.action("leave", leave);
+bot.use(session());
+bot.use(<any>stage.middleware());
+
+// leave from
+superWizard.action("leave", leaveEditMessage);
