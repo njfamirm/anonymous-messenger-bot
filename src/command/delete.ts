@@ -12,7 +12,7 @@ import { replyUserMenu } from "../common/message";
 
 // delete message sent from user to admins by user
 // delete delete inline keyboard
-async function deleteMessageSentByUser(ctx: Context) {
+async function deleteMessageSent(ctx: Context) {
   const query: QueryConfig = {
     text: findMessageIdByUserQuery,
     values: [
@@ -27,7 +27,7 @@ async function deleteMessageSentByUser(ctx: Context) {
     .then((resp: QueryResult) => {
       // 2. get and delete message from db
       // 3. delete message from admin & edit replyed message
-      deleteFromAdmin(resp.rows[0]);
+      deleteFromRecivers(resp.rows[0]);
     })
     .catch((err) => {
       log(err);
@@ -51,36 +51,16 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
     .then((resp: QueryResult) => {
       // 2. get and delete message from db
       // 3. edit all message
-      deleteFromUser(resp.rows[0]);
+      console.log(resp);
+      deleteFromReciver(resp.rows[0]);
     })
     .catch((err) => {
       log(err);
     });
 }
 
-// edit message from user
-// and delete messages from admin
-function deleteFromAdmin(messageIds: any) {
-  // 1. delete message sent to admin
-  for (var i = 0; i < messageIds.reciverchatids.length; i++) {
-    bot.telegram.deleteMessage(
-      messageIds.reciverchatids[i],
-      messageIds.recivermessageids[i]
-    );
-  }
-
-  // 2. delete replyed inline keyboard
-  bot.telegram.editMessageText(
-    messageIds.senderchatid,
-    messageIds.replymessageid,
-    undefined,
-    deleted,
-    { reply_markup: { inline_keyboard: [] } }
-  );
-}
-
-// delete
-function deleteFromUser(messageIds: any) {
+function deleteFromReciver(messageIds: any) {
+  console.log(messageIds);
   // 1. delete message sent to admin
   for (var i = 0; i < messageIds.reciverchatids.length; i++) {
     bot.telegram.editMessageReplyMarkup(
@@ -100,4 +80,25 @@ function deleteFromUser(messageIds: any) {
   );
 }
 
-bot.action("delete", deleteMessageSentByUser);
+// edit message from user
+// and delete messages from admin
+function deleteFromRecivers(messageIds: any) {
+  // 1. delete message sent to admin
+  for (var i = 0; i < messageIds.reciverchatids.length; i++) {
+    bot.telegram.deleteMessage(
+      messageIds.reciverchatids[i],
+      messageIds.recivermessageids[i]
+    );
+  }
+
+  // 2. delete replyed inline keyboard
+  bot.telegram.editMessageText(
+    messageIds.senderchatid,
+    messageIds.replymessageid,
+    undefined,
+    deleted,
+    { reply_markup: { inline_keyboard: [] } }
+  );
+}
+
+bot.action("delete", deleteMessageSent);

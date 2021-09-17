@@ -10,10 +10,10 @@ import {
   deletemenu,
   sendedToChannel,
   replyToUser,
+  help,
 } from "../../data/json/message.json";
 
 export const startMessage: Message = {
-  type: "text",
   text: start.text,
   inlineKeyboard: start.inlineKeyboard,
 };
@@ -34,9 +34,13 @@ export const leaveMessage: Message = {
 };
 
 export const mainMenuMessage: Message = {
-  type: "text",
   text: menu.text,
   inlineKeyboard: menu.inlineKeyboard,
+};
+
+export const helpMessage: Message = {
+  text: help.text,
+  inlineKeyboard: help.inlineKeyboard,
 };
 
 export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;

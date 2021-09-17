@@ -1,8 +1,8 @@
 # Telegram anonymous message bot
 
-> Anonymous messaging bot for channels
+Anonymous messaging bot for channels
 
-### Features
+## Features
 
 - [x] send anonymous message
 - [x] auto send to channel by confirmation
@@ -11,20 +11,20 @@
 - [ ] flexiable message
 - [ ] flexiable setting
 
----
+### Usage
 
-## Usage
-
-set token <sub>get from [bot father](https://t.me/BotFather)</sub>
+set token
 
 ```shell
 export TOKEN=TOKEN
 ```
 
 run
+
 ```shell
 docker-compose up
 ```
+
 ---
 
 **We are waiting for your participation!**

@@ -6,6 +6,10 @@
         {
           "text": "ارسال پیام ناشناس",
           "callback_data": "anonymous"
+        },
+        {
+          "text": "راهنما",
+          "callback_data": "help"
         }
       ]
     ]
@@ -50,6 +54,10 @@
         {
           "text": "ارسال پیام ناشناس",
           "callback_data": "anonymous"
+        },
+        {
+          "text": "راهنما",
+          "callback_data": "help"
         }
       ]
     ]
@@ -64,6 +72,17 @@
         {
           "text": "ارسال به کانال",
           "callback_data": "sendToChannel"
+        }
+      ]
+    ]
+  },
+  "help": {
+    "text": "راهنما...",
+    "inlineKeyboard": [
+      [
+        {
+          "text": "ارسال منو",
+          "callback_data": "menu"
         }
       ]
     ]
@@ -98,7 +117,6 @@
       ]
     ]
   },
-  "deleted": "حذف شد",
   "replyToUser": {
     "inlineKeyboard": [
       [
@@ -109,6 +127,7 @@
       ]
     ]
   },
+  "deleted": "حذف شد",
   "leaved": "خارج شد",
   "updated": "لیست ادمین ها آپدیت شد!"
 }

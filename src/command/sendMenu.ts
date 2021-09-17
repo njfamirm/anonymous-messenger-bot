@@ -1,6 +1,5 @@
 import { Context } from "telegraf";
 import bot from "../common/bot";
-import { sendMessage } from "../common/sendmessage";
 import { mainMenuMessage } from "../common/message";
 
 // edit menu to user
@@ -17,10 +16,16 @@ export async function editToMenu(ctx: Context) {
 
 // send menu to message
 export async function sendMenuMessage(ctx: Context) {
-  const user = ctx.from;
-  if (user != undefined) {
-    sendMessage(user.id, mainMenuMessage);
-  }
+  if (
+    mainMenuMessage.text === undefined ||
+    mainMenuMessage.inlineKeyboard === undefined ||
+    ctx.message === undefined
+  )
+    return;
+  ctx.reply(mainMenuMessage.text, {
+    reply_markup: { inline_keyboard: mainMenuMessage.inlineKeyboard },
+    reply_to_message_id: ctx.message?.message_id,
+  });
 }
 
 bot.action("menu", editToMenu);

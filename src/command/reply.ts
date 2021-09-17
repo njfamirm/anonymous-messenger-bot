@@ -7,7 +7,7 @@ import { findUserChatIdByAdminQuery } from "../../data/json/databaseQuery.json";
 import { QueryConfig, QueryResult } from "pg";
 import { messageIds } from "../common/type";
 import { saveMessageIdsDB } from "../db/save";
-import { leave } from "./sendAnonymous";
+import { leave } from "./leave";
 import log from "../common/log";
 
 // get message

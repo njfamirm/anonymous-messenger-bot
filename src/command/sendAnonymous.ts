@@ -4,9 +4,9 @@ import { Context } from "telegraf";
 import {
   pleaseSendMessage,
   sendedMessage,
-  leaveMessage,
   sendToAdminMenu,
 } from "../common/message";
+import { leave } from "./leave";
 
 import { adminsChatIds } from "../../data/json/config.json";
 import { saveMessageIdsDB } from "../db/save";
@@ -39,9 +39,9 @@ export async function getMessage(ctx: Context) {
 // 2. send ok to user
 // 3. save message id in db
 async function sendToAdmin(ctx: Context) {
-  if (ctx.from === undefined || ctx.message === undefined) return;
+  if (ctx.from === undefined) return;
 
-  // delete last message inline keyboard
+  // 1. delete last message inline keyboard
   const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
   bot.telegram.editMessageReplyMarkup(
     ctx.from.id,
@@ -50,70 +50,56 @@ async function sendToAdmin(ctx: Context) {
     { inline_keyboard: [] }
   );
 
-  // get message id and message id | admins & user
+  // get message id and message id admins
   var adminChatIds: Array<number> = [];
   var adminMessageIds: Array<number> = [];
-  const userChatId: number = ctx.from.id;
 
-  // 1. send copy to admins
+  // 2. send copy to admins
   for (const adminChatID of adminsChatIds) {
     var messageId = await ctx.copyMessage(adminChatID, {
       reply_markup: { inline_keyboard: sendToAdminMenu },
     });
-    // get message id and chat id | admins
-    if (ctx.from === undefined) {
-      log("Error in get admin chat id | send anonymous breaked");
-      return;
-    }
+    // 3. get message id and chat id admins
     adminChatIds.push(adminChatID);
     adminMessageIds.push(messageId.message_id);
   }
 
   if (
-    !(
-      sendedMessage.text != undefined &&
-      sendedMessage.inlineKeyboard != undefined &&
-      ctx.message != undefined
-    )
-  ) {
-    log("Error in send ok to user");
+    sendedMessage.text === undefined ||
+    sendedMessage.inlineKeyboard === undefined ||
+    ctx.message === undefined
+  )
     return;
-  }
-  // 2. sened ok | REPLY
+
+  // 4. sened ok | REPLY
   const replyMessageId = await ctx.reply(sendedMessage.text, {
     reply_to_message_id: ctx.message.message_id,
     reply_markup: { inline_keyboard: sendedMessage.inlineKeyboard },
   });
 
   // 3. save messageid in database
+  saveMessageIds(ctx, replyMessageId, adminChatIds, adminMessageIds);
+
+  return (<any>ctx).scene.leave();
+}
+
+// save message id in db
+async function saveMessageIds(
+  ctx: Context,
+  replyMessageId: any,
+  adminChatIds: Array<number>,
+  adminMessageIds: Array<number>
+) {
+  if (ctx.from === undefined || ctx.message === undefined) return;
   var messagesids: messageIds = {
     mainMessageId: ctx.message.message_id,
     replyMessageId: replyMessageId.message_id,
     reciverChatIds: adminChatIds,
     reciverMessageIds: adminMessageIds,
-    senderChatId: userChatId,
+    senderChatId: ctx.from.id,
   };
+  console.log(messagesids);
   saveMessageIdsDB(messagesids);
-
-  return (<any>ctx).scene.leave();
-}
-
-// for leave from wizard
-export async function leave(ctx: Context) {
-  if (
-    !(
-      leaveMessage.text != undefined && leaveMessage.inlineKeyboard != undefined
-    )
-  ) {
-    log("Error in leave from anonymous");
-    return;
-  }
-
-  ctx.editMessageText(leaveMessage.text, {
-    reply_markup: { inline_keyboard: leaveMessage.inlineKeyboard },
-  });
-
-  return (<any>ctx).scene.leave();
 }
 
 // wizard

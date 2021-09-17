@@ -1,5 +1,4 @@
 import { Context } from "telegraf";
-import { sendMessage } from "../common/sendmessage";
 import bot from "../common/bot";
 import { startMessage } from "../common/message";
 import { userDB } from "../db/json/db";
@@ -7,10 +6,15 @@ import { userDB } from "../db/json/db";
 // send start message
 async function start(ctx: Context) {
   const user = ctx.from;
-  if (user?.id != undefined && ctx.message != undefined) {
-    sendMessage(user.id, startMessage);
-    addUserToDB(ctx);
-  }
+  if (
+    startMessage.text === undefined ||
+    startMessage.inlineKeyboard === undefined
+  )
+    return;
+  ctx.reply(startMessage.text, {
+    reply_markup: { inline_keyboard: startMessage.inlineKeyboard },
+  });
+  addUserToDB(ctx);
 }
 
 // add user information to db

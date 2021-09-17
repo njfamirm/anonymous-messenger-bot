@@ -2,19 +2,25 @@ import bot from "../common/bot";
 import { Context } from "telegraf";
 import { deleteMessageSentByAdmin } from "./delete";
 import { channelID } from "../../data/json/config.json";
+import { MessageId } from "typegram";
 
 var regex = new RegExp(`https:\/\/t.me/${channelID}\/\d*`);
 
 // 1. send copy of message to channel
 // 2. delete reply markup ( send to channel from admins & delete from user )
 async function sendToChannel(ctx: Context) {
+  if (ctx.from === undefined) return;
+
   const postReplyLink = checkReply(ctx);
+  var postMessageId: MessageId;
   if (postReplyLink) {
-    const result = await ctx.copyMessage(`@${channelID}`, {
+    postMessageId = await ctx.copyMessage(`@${channelID}`, {
       reply_to_message_id: parseInt(
         postReplyLink.replace(`https://t.me/${channelID}/`, "")
       ),
     });
+  } else {
+    postMessageId = await ctx.copyMessage(`@${channelID}`);
   }
   deleteMessageSentByAdmin(ctx);
 }
