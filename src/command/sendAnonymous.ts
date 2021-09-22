@@ -11,6 +11,7 @@ import { adminsChatIds, commands } from "../../data/json/config.json";
 import { inCorrect } from "../../data/json/message.json";
 import { saveMessageIdsDB } from "../db/save";
 import { messageIds } from "../common/type";
+import { checkErrorCode } from "../common/checkError";
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
@@ -26,11 +27,16 @@ async function getMessageEdit(ctx: Context) {
   }
 
   // 1. edit to please send me your message
-  const replyedMessage = await ctx.editMessageText(pleaseSendMessage.text, {
-    reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
-  });
-
-  (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
+  ctx
+    .editMessageText(pleaseSendMessage.text, {
+      reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+    })
+    .then((replyMessage) => {
+      (<any>ctx).wizard.state.message = { replyedMessage: replyMessage };
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 
   // 2. wait to user send message...
   return (<any>ctx).wizard.next();
@@ -46,12 +52,17 @@ async function getMessageSend(ctx: Context) {
     return;
 
   // 1. edit to please send me your message
-  const replyedMessage = await ctx.reply(pleaseSendMessage.text, {
-    reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
-    reply_to_message_id: ctx.message?.message_id,
-  });
-
-  (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
+  ctx
+    .reply(pleaseSendMessage.text, {
+      reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+      reply_to_message_id: ctx.message?.message_id,
+    })
+    .then((replyedMessage) => {
+      (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 
   // 2. wait to user send message...
   return (<any>ctx).wizard.next();
@@ -66,28 +77,34 @@ async function sendToAdmin(ctx: Context) {
   // if message have command
   if (commands.includes((<any>ctx).message.text)) {
     leave(ctx);
-    ctx.reply(inCorrect, { reply_to_message_id: ctx.message?.message_id });
+    ctx
+      .reply(inCorrect, { reply_to_message_id: ctx.message?.message_id })
+      .catch((err) => {
+        checkErrorCode(ctx, err, false);
+      });
 
     // delete inline keyboard last message
     const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
-    bot.telegram.editMessageReplyMarkup(
-      ctx.from.id,
-      replyMessage.message_id,
-      undefined,
-      { inline_keyboard: [] }
-    );
 
+    bot.telegram
+      .editMessageReplyMarkup(ctx.from.id, replyMessage.message_id, undefined, {
+        inline_keyboard: [],
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, false);
+      });
     return;
   }
 
   // 1. delete last message inline keyboard
   const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
-  bot.telegram.editMessageReplyMarkup(
-    ctx.from.id,
-    replyMessage.message_id,
-    undefined,
-    { inline_keyboard: [] }
-  );
+  bot.telegram
+    .editMessageReplyMarkup(ctx.from.id, replyMessage.message_id, undefined, {
+      inline_keyboard: [],
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 
   // get message id and message id admins
   var adminChatIds: Array<number> = [];
@@ -95,14 +112,23 @@ async function sendToAdmin(ctx: Context) {
 
   // 2. send copy to admins
   for (const adminChatID of adminsChatIds) {
-    var messageId = await ctx.copyMessage(adminChatID, {
-      reply_markup: { inline_keyboard: sendToAdminMenu },
-    });
-    // 3. get message id and chat id admins
-    adminChatIds.push(adminChatID);
-    adminMessageIds.push(messageId.message_id);
+    const exit = await ctx
+      .copyMessage(adminChatID, {
+        reply_markup: { inline_keyboard: sendToAdminMenu },
+      })
+      .then((messageID) => {
+        adminChatIds.push(adminChatID);
+        adminMessageIds.push(messageID.message_id);
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, true);
+        return true;
+      });
+
+    if (exit === true) return;
   }
 
+  // 3. get message id and chat id admins
   if (
     sendedMessage.text === undefined ||
     sendedMessage.inlineKeyboard === undefined ||
@@ -111,13 +137,18 @@ async function sendToAdmin(ctx: Context) {
     return;
 
   // 4. sened ok | REPLY
-  const replyMessageId = await ctx.reply(sendedMessage.text, {
-    reply_to_message_id: ctx.message.message_id,
-    reply_markup: { inline_keyboard: sendedMessage.inlineKeyboard },
-  });
-
-  // 3. save messageid in database
-  saveMessageIds(ctx, replyMessageId, adminChatIds, adminMessageIds);
+  ctx
+    .reply(sendedMessage.text, {
+      reply_to_message_id: ctx.message.message_id,
+      reply_markup: { inline_keyboard: sendedMessage.inlineKeyboard },
+    })
+    .then((replyMessageId) => {
+      // 3. save messageid in database
+      saveMessageIds(ctx, replyMessageId, adminChatIds, adminMessageIds);
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 
   return (<any>ctx).scene.leave();
 }

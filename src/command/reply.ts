@@ -8,6 +8,7 @@ import { QueryConfig, QueryResult } from "pg";
 import { messageIds } from "../common/type";
 import { saveMessageIdsDB } from "../db/save";
 import { leaveEditMessage } from "./leave";
+import { checkErrorCode } from "../common/checkError";
 import log from "../common/log";
 
 // get message
@@ -21,14 +22,20 @@ async function getMessage(ctx: Context) {
     return;
 
   // 1. edit to please send me your message
-  const replyedMessage = await ctx.reply(pleaseSendReplyMessage.text, {
-    reply_markup: { inline_keyboard: pleaseSendReplyMessage.inlineKeyboard },
-    reply_to_message_id: (<any>ctx).update.callback_query.message.message_id,
-  });
+  ctx
+    .reply(pleaseSendReplyMessage.text, {
+      reply_markup: { inline_keyboard: pleaseSendReplyMessage.inlineKeyboard },
+      reply_to_message_id: (<any>ctx).update.callback_query.message.message_id,
+    })
+    .then((replyedMessage) => {
+      (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 
   // send data to next step
   (<any>ctx).wizard.state.data = { ctx: ctx };
-  (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
 
   // 2. wait to user send message...
   return (<any>ctx).wizard.next();
@@ -40,12 +47,15 @@ async function sendToUser(ctx: Context) {
 
   // 1. delete last message inline keyboard
   const replyMessage = (<any>ctx).wizard.state.message.replyedMessage;
-  bot.telegram.editMessageReplyMarkup(
-    ctx.from.id,
-    replyMessage.message_id,
-    undefined,
-    { inline_keyboard: [] }
-  );
+  var exit = await bot.telegram
+    .editMessageReplyMarkup(ctx.from.id, replyMessage.message_id, undefined, {
+      inline_keyboard: [],
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+      return true;
+    });
+  if (exit === true) return;
 
   // 2. get last message id
   const lastCtx = (<any>ctx).wizard.state.data.ctx;
@@ -58,32 +68,52 @@ async function sendToUser(ctx: Context) {
   };
 
   // 3. get message ids
-  await pool
+  pool
     .query(query)
     .then(async (resp: QueryResult) => {
       if (ctx.message === undefined || ctx.from === undefined) return;
 
       // 4. send copy of message to another user
-      const senderchatid = resp.rows[0].senderchatid;
+      const reciverChatID = resp.rows[0].senderchatid;
       const mainMessageId = resp.rows[0].mainmessageid;
-      const adminMessageId = await ctx.copyMessage(senderchatid, {
-        reply_markup: { inline_keyboard: replyMenu },
-        reply_to_message_id: mainMessageId,
-      });
+      var adminMessageID;
+      var replyMessageID;
+      var exit = await ctx
+        .copyMessage(reciverChatID, {
+          reply_markup: { inline_keyboard: replyMenu },
+          reply_to_message_id: mainMessageId,
+        })
+        .then((adminMessageId) => {
+          adminMessageID = adminMessageId;
+        })
+        .catch((err) => {
+          checkErrorCode(ctx, err, true);
+          return true;
+        });
+
+      if (exit === true) return;
 
       // 5. send ok to user
       if (sendedMessage.text === undefined) return;
-      const replyMessageId = await ctx.reply(sendedMessage.text, {
-        reply_markup: { inline_keyboard: deleteMenu },
-        reply_to_message_id: ctx.message?.message_id,
-      });
-
+      const exit2 = await ctx
+        .reply(sendedMessage.text, {
+          reply_markup: { inline_keyboard: deleteMenu },
+          reply_to_message_id: ctx.message?.message_id,
+        })
+        .then((replyMessageId) => {
+          replyMessageID = replyMessageId;
+        })
+        .catch((err) => {
+          checkErrorCode(ctx, err, false);
+          return true;
+        });
+      if (exit2) return;
       // 6. save in db
       const messageids: messageIds = {
         mainMessageId: ctx.message.message_id,
-        replyMessageId: replyMessageId.message_id,
-        reciverChatIds: [senderchatid],
-        reciverMessageIds: [adminMessageId.message_id],
+        replyMessageId: (<any>replyMessageID).message_id,
+        reciverChatIds: [reciverChatID],
+        reciverMessageIds: [(<any>adminMessageID).message_id],
         senderChatId: ctx.from.id,
       };
       saveMessageIdsDB(messageids);

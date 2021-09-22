@@ -2,7 +2,7 @@ import bot from "../common/bot";
 import { Context } from "telegraf";
 import { deleteMessageSentByAdmin } from "./delete";
 import { channelID } from "../../data/json/config.json";
-import { MessageId } from "typegram";
+import { checkErrorCode } from "../common/checkError";
 
 var regex = new RegExp(`https:\/\/t.me/${channelID}\/\d*`);
 
@@ -12,15 +12,25 @@ async function sendToChannel(ctx: Context) {
   if (ctx.from === undefined) return;
 
   const postReplyLink = checkReply(ctx);
-  var postMessageId: MessageId;
   if (postReplyLink) {
-    postMessageId = await ctx.copyMessage(`@${channelID}`, {
-      reply_to_message_id: parseInt(
-        postReplyLink.replace(`https://t.me/${channelID}/`, "")
-      ),
-    });
+    const exit = await ctx
+      .copyMessage(`@${channelID}`, {
+        reply_to_message_id: parseInt(
+          postReplyLink.replace(`https://t.me/${channelID}/`, "")
+        ),
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, true);
+        return true;
+      });
+
+    if (exit === true) return;
   } else {
-    postMessageId = await ctx.copyMessage(`@${channelID}`);
+    const exit = await ctx.copyMessage(`@${channelID}`).catch((err) => {
+      checkErrorCode(ctx, err, true);
+      return true;
+    });
+    if (exit === true) return;
   }
   deleteMessageSentByAdmin(ctx);
 }

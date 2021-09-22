@@ -1,6 +1,7 @@
 import { Context } from "telegraf";
 import bot from "../common/bot";
 import { mainMenuMessage } from "../common/message";
+import { checkErrorCode } from "../common/checkError";
 
 // edit menu to user
 export async function editToMenu(ctx: Context) {
@@ -8,9 +9,13 @@ export async function editToMenu(ctx: Context) {
     mainMenuMessage.text != undefined &&
     mainMenuMessage.inlineKeyboard != undefined
   ) {
-    ctx.editMessageText(mainMenuMessage.text, {
-      reply_markup: { inline_keyboard: mainMenuMessage.inlineKeyboard },
-    });
+    ctx
+      .editMessageText(mainMenuMessage.text, {
+        reply_markup: { inline_keyboard: mainMenuMessage.inlineKeyboard },
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, false);
+      });
   }
 }
 
@@ -22,10 +27,14 @@ export async function sendMenuMessage(ctx: Context) {
     ctx.message === undefined
   )
     return;
-  ctx.reply(mainMenuMessage.text, {
-    reply_markup: { inline_keyboard: mainMenuMessage.inlineKeyboard },
-    reply_to_message_id: ctx.message?.message_id,
-  });
+  ctx
+    .reply(mainMenuMessage.text, {
+      reply_markup: { inline_keyboard: mainMenuMessage.inlineKeyboard },
+      reply_to_message_id: ctx.message?.message_id,
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 }
 
 bot.action("menu", editToMenu);

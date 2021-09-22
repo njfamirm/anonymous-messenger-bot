@@ -27,4 +27,9 @@ docker-compose up
 
 ---
 
+#### Todo
+
+- fix block bot bug
+- fig not exists bug
+
 **We are waiting for your participation!**

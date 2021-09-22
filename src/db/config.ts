@@ -15,7 +15,7 @@ pool.connect();
 // create table in not exists
 async function createTable() {
   await pool.query(createTableQuery).catch((err) => {
-    console.error(err.stack);
+    log(err.stack);
   });
 }
 

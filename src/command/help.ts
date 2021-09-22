@@ -1,6 +1,7 @@
 import { Context } from "telegraf";
 import bot from "../common/bot";
-import { helpMessage, startMessage } from "../common/message";
+import { helpMessage } from "../common/message";
+import { checkErrorCode } from "../common/checkError";
 
 export async function SendHelp(ctx: Context) {
   if (
@@ -9,10 +10,14 @@ export async function SendHelp(ctx: Context) {
     ctx.message === undefined
   )
     return;
-  ctx.reply(helpMessage.text, {
-    reply_markup: { inline_keyboard: helpMessage.inlineKeyboard },
-    reply_to_message_id: ctx.message?.message_id,
-  });
+  ctx
+    .reply(helpMessage.text, {
+      reply_markup: { inline_keyboard: helpMessage.inlineKeyboard },
+      reply_to_message_id: ctx.message?.message_id,
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 }
 
 async function EditHelp(ctx: Context) {
@@ -21,9 +26,13 @@ async function EditHelp(ctx: Context) {
     helpMessage.inlineKeyboard === undefined
   )
     return;
-  ctx.editMessageText(helpMessage.text, {
-    reply_markup: { inline_keyboard: helpMessage.inlineKeyboard },
-  });
+  ctx
+    .editMessageText(helpMessage.text, {
+      reply_markup: { inline_keyboard: helpMessage.inlineKeyboard },
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 }
 
 bot.command("help", SendHelp);
