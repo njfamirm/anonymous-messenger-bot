@@ -11,20 +11,6 @@ Anonymous messaging bot for channels
 - [ ] flexiable message
 - [ ] flexiable setting
 
-### Usage
-
-set token
-
-```shell
-export TOKEN=TOKEN
-```
-
-run
-
-```shell
-docker-compose up
-```
-
 ---
 
 #### Todo
