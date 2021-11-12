@@ -7,7 +7,6 @@ import {
 import { QueryConfig, QueryResult } from "pg";
 import { pool } from "../db/config";
 import { deleted } from "../../data/json/message.json";
-import log from "../common/log";
 import { replyUserMenu } from "../common/message";
 import { checkErrorCode } from "../common/checkError";
 
@@ -31,7 +30,7 @@ async function deleteMessageSent(ctx: Context) {
       deleteFromRecivers(ctx, resp.rows[0]);
     })
     .catch((err) => {
-      log(err);
+      //
     });
 }
 
@@ -55,7 +54,7 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
       deleteFromReciver(ctx, resp.rows[0]);
     })
     .catch((err) => {
-      log(err);
+      //
     });
 }
 
@@ -113,8 +112,14 @@ function deleteFromRecivers(ctx: Context, messageIds: any) {
       { reply_markup: { inline_keyboard: [] } }
     )
     .catch((err) => {
-      checkErrorCode(ctx, err, true);
+      checkErrorCode(ctx, err, false);
     });
 }
 
+// delete from bot by admin
+function deleteByAdmin(ctx: Context) {
+  ctx.deleteMessage()
+}
+
 bot.action("delete", deleteMessageSent);
+bot.action("deleteMessage", deleteByAdmin);

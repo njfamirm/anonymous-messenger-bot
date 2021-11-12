@@ -19,6 +19,6 @@ export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
 
     // other error
   } else {
-    log(err);
+    log(err + "test");
   }
 }

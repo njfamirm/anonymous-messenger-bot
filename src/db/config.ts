@@ -20,9 +20,6 @@ async function createTable() {
 }
 
 createTable()
-  .then(() => {
-    log("table created");
-  })
   .catch(() => {
     log("error in create table");
   });

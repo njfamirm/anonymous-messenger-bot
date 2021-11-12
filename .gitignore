@@ -12,3 +12,6 @@ dist
 # data
 
 data/json/user.json
+
+# docker env
+.env
