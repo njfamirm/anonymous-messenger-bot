@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { createTableQuery } from "../../data/json/databaseQuery.json";
-import log from "../common/log";
+import {logError, logInfo} from "../common/log";
 
 export const pool = new Pool({
   host: process.env.POSTGRES_HOST,
@@ -15,11 +15,11 @@ pool.connect();
 // create table in not exists
 async function createTable() {
   await pool.query(createTableQuery).catch((err) => {
-    log(err.stack);
+    logError(err.stack);
   });
 }
 
 createTable()
   .catch(() => {
-    log("error in create table");
+    logError("error in creating table");
   });

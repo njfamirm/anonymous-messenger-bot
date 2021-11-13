@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { leaveMessage } from "../common/message";
-import log from "../common/log";
+import {logError} from "../common/log";
 import { checkErrorCode } from "../common/checkError";
 
 // for leave from wizard
@@ -10,7 +10,7 @@ export async function leaveEditMessage(ctx: Context) {
       leaveMessage.text != undefined && leaveMessage.inlineKeyboard != undefined
     )
   ) {
-    log("Error in leave from anonymous");
+    logError("Error in leave from anonymous");
     return;
   }
 

@@ -1,6 +1,6 @@
 import { QueryConfig } from "pg";
 import { saveMessageIdsQuery } from "../../data/json/databaseQuery.json";
-import log from "../common/log";
+import {logError} from "../common/log";
 import { messageIds } from "../common/type";
 import { pool } from "./config";
 
@@ -18,6 +18,6 @@ export async function saveMessageIdsDB(messageIds: messageIds) {
   };
 
   await pool.query(saveMessageIds).catch((err) => {
-    log(err);
+    logError(err);
   });
 }

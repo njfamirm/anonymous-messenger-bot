@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { forbiddenErrorMessage } from "../../data/json/message.json";
-import log from "./log";
+import {logError} from "./log";
 import { leave } from "../command/leave";
 
 // check error => if 403 forbiden
@@ -19,6 +19,6 @@ export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
 
     // other error
   } else {
-    log(err + "test");
+    logError(err + "test");
   }
 }

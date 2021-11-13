@@ -6,8 +6,8 @@ import "./src/db/config";
 import "./src/command/delete";
 import "./src/command/reply";
 import "./src/command/help";
-import log from "./src/common/log";
+import {logInfo} from "./src/common/log";
 import bot from "./src/common/bot";
 
-log("start...");
+logInfo("Start...");
 bot.launch();

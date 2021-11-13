@@ -2,7 +2,7 @@ import { Context } from "telegraf";
 import bot from "../common/bot";
 import { startMessage } from "../common/message";
 import { userDB } from "../db/json/db";
-import log from "../common/log";
+import {logError, logInfo} from "../common/log";
 import { checkErrorCode } from "../common/checkError";
 
 // send start message
@@ -20,6 +20,7 @@ async function start(ctx: Context) {
       checkErrorCode(ctx, err, false);
       return;
     });
+  logInfo(`chatID → ${String(ctx.from?.id)} :: username → ${ctx.from?.username}`)  
   addUserToDB(ctx);
 }
 
@@ -32,7 +33,7 @@ function addUserToDB(ctx: Context) {
         name: ctx.from.first_name + ctx.from.last_name,
       })
       .catch((err) => {
-        log(err);
+        logError(err);
       });
   }
 }

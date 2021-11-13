@@ -14,9 +14,7 @@ docker-compose build
 
 echoStep 'Running image...'
 
-docker-compose up \
-  --detach \
-  --remove-orphans \
-  --force-recreate
-
-docker ps -a
+  docker-compose up \
+    --detach \
+    --remove-orphans \
+    --force-recreate

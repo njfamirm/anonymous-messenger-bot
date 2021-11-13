@@ -9,7 +9,7 @@ import { messageIds } from "../common/type";
 import { saveMessageIdsDB } from "../db/save";
 import { leaveEditMessage } from "./leave";
 import { checkErrorCode } from "../common/checkError";
-import log from "../common/log";
+import {logError} from "../common/log";
 
 // get message
 async function getMessage(ctx: Context) {
@@ -119,7 +119,7 @@ async function sendToUser(ctx: Context) {
       saveMessageIdsDB(messageids);
     })
     .catch((err) => {
-      log(err);
+      logError(err);
     });
 
   return (<any>ctx).scene.leave();
