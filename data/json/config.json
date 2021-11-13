@@ -7,6 +7,6 @@
     "document": "./data/document/",
     "json": "./data/json/"
   },
-  "channelID": "@njfamirm256",
+  "channelID": "njfamirm256",
   "commands": ["/start", "/menu", "/anonymous", "/help"]
 }
