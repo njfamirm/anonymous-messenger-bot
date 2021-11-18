@@ -24,7 +24,7 @@ export function logInfo(msg: string) {
 }
 
 function writeErrorLog(logObject: ILogObject) {
-  appendFileSync("./error.log", `[ ${logObject.date.toLocaleTimeString()} - ${logObject.date.toDateString()} ]\t ${logObject.fullFilePath} →${logObject.argumentsArray}\n`);
+  appendFileSync("./error.log", `[ ${logObject.date.toLocaleTimeString()} - ${logObject.date.toDateString()} ]\t →${logObject.argumentsArray}\n`);
 }
 
 

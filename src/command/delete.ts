@@ -30,7 +30,8 @@ async function deleteMessageSent(ctx: Context) {
       deleteFromRecivers(ctx, resp.rows[0]);
     })
     .catch((err) => {
-      //
+      // fix bug
+      checkErrorCode(ctx, err, false);
     });
 }
 
@@ -54,7 +55,9 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
       deleteFromReciver(ctx, resp.rows[0]);
     })
     .catch((err) => {
-      //
+      // fix bug
+      checkErrorCode(ctx, err, false);
+
     });
 }
 

@@ -1,16 +1,18 @@
-import { Pool } from "pg";
+import { Pool, Client } from "pg";
 import { createTableQuery } from "../../data/json/databaseQuery.json";
-import {logError, logInfo} from "../common/log";
+import { logError } from "../common/log";
 
-export const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  port: Number(process.env.POSTGRES_PORT),
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
-});
+// export const pool = new Pool({
+//   host: process.env.POSTGRES_HOST,
+//   port: Number(process.env.POSTGRES_PORT),
+//   user: process.env.POSTGRES_USER,
+//   password: process.env.POSTGRES_PASSWORD,
+//   database: process.env.POSTGRES_DB,
+// });
 
+export const pool = new Client(process.env.POSTGRES_URL);
 pool.connect();
+// pool.connect();
 
 // create table in not exists
 async function createTable() {
@@ -19,7 +21,6 @@ async function createTable() {
   });
 }
 
-createTable()
-  .catch(() => {
-    logError("error in creating table");
-  });
+createTable().catch(() => {
+  logError("error in creating table");
+});

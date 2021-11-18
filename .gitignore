@@ -15,3 +15,6 @@ data/json/user.json
 
 # docker env
 .env
+
+# log
+*.log

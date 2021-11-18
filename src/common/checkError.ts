@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { forbiddenErrorMessage } from "../../data/json/message.json";
-import {logError} from "./log";
+import { logError } from "./log";
 import { leave } from "../command/leave";
 
 // check error => if 403 forbiden
@@ -8,6 +8,10 @@ import { leave } from "../command/leave";
 // and leave from wizard
 // else => log error
 export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
+  if (err.response === undefined || err.response.error_code === undefined) {
+    logError(err);
+    return;
+  }
   // 403 forbiden error
   if (err.response.error_code === 403 && ctx === null) {
     return;
@@ -19,6 +23,6 @@ export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
 
     // other error
   } else {
-    logError(err + "test");
+    logError(err);
   }
 }
