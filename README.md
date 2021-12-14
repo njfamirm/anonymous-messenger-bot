@@ -11,11 +11,4 @@ Anonymous messaging bot for channels
 - [ ] flexiable message
 - [ ] flexiable setting
 
----
-
-#### Todo
-
-- fix block bot bug
-- fig not exists bug
-
 **We are waiting for your participation!**

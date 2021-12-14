@@ -23,5 +23,3 @@ services:
       - POSTGRES_URL=postgres://postgres:postgres@postgres:5432/postgres
     depends_on:
       - postgres
-    # links:
-    #   - "postgres:5432"
