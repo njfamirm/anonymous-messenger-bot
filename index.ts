@@ -5,9 +5,8 @@ import "./src/command/sendMenu";
 import "./src/db/config";
 import "./src/command/delete";
 import "./src/command/reply";
-import "./src/command/help";
 import "./src/command/unClear";
-import {logInfo} from "./src/common/log";
+import { logInfo } from "./src/common/log";
 import bot from "./src/common/bot";
 
 logInfo("Start...");

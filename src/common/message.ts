@@ -10,7 +10,7 @@ import {
   deletemenu,
   sendedToChannel,
   replyToUser,
-  help,
+  anonymousType,
   pleaseSendReply,
 } from "../../data/json/message.json";
 
@@ -44,10 +44,10 @@ export const mainMenuMessage: Message = {
   inlineKeyboard: menu.inlineKeyboard,
 };
 
-export const helpMessage: Message = {
-  text: help.text,
-  inlineKeyboard: help.inlineKeyboard,
-};
+// export const helpMessage: Message = {
+//   text: help.text,
+//   inlineKeyboard: help.inlineKeyboard,
+// };
 
 export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;
 export const deleteMenu: Menu = deletemenu.inlineKeyboard;

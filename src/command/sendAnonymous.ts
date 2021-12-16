@@ -6,12 +6,15 @@ import {
   sendedMessage,
   sendToAdminMenu,
 } from "../common/message";
+import { anonymousType } from "../../data/json/message.json";
 import { leaveEditMessage, leave } from "./leave";
 import { adminsChatIds, commands } from "../../data/json/config.json";
 import { inCorrect } from "../../data/json/message.json";
 import { saveMessageIdsDB } from "../db/save";
 import { messageIds } from "../common/type";
 import { checkErrorCode } from "../common/checkError";
+
+// 1105614960
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
@@ -26,13 +29,19 @@ async function getMessageEdit(ctx: Context) {
     return;
   }
 
+  // type of anonymous message
+  const type: string = (<any>ctx).callbackQuery.data;
+
   // 1. edit to please send me your message
   ctx
     .editMessageText(pleaseSendMessage.text, {
       reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
     })
     .then((replyMessage) => {
-      (<any>ctx).wizard.state.message = { replyedMessage: replyMessage };
+      (<any>ctx).wizard.state.message = {
+        replyedMessage: replyMessage,
+        anonymousType: type,
+      };
     })
     .catch((err) => {
       checkErrorCode(ctx, err, false);
@@ -119,6 +128,19 @@ async function sendToAdmin(ctx: Context) {
       .then((messageID) => {
         adminChatIds.push(adminChatID);
         adminMessageIds.push(messageID.message_id);
+
+        // get type of anonymous from state
+        var type: "anonymous" | "reporter" | "eager" = "anonymous";
+        type = (<any>ctx).wizard.state.message.anonymousType;
+
+        // edit message and add hashtag
+        bot.telegram.editMessageText(
+          adminChatID,
+          messageID.message_id,
+          undefined,
+          `${(<any>ctx).message.text}\n\n ${anonymousType[type]}`,
+          { reply_markup: { inline_keyboard: sendToAdminMenu } }
+        );
       })
       .catch((err) => {
         checkErrorCode(ctx, err, true);
@@ -177,9 +199,17 @@ getMessage.action("anonymous", (ctx) => {
   getMessageEdit(ctx);
 });
 
-getMessage.command("anonymous", (ctx) => {
-  getMessageSend(ctx);
+getMessage.action("reporter", (ctx) => {
+  getMessageEdit(ctx);
 });
+
+getMessage.action("eager", (ctx) => {
+  getMessageEdit(ctx);
+});
+
+// getMessage.command("anonymous", (ctx) => {
+//   getMessageSend(ctx);
+// });
 
 // wizard
 const superWizard = new Scenes.WizardScene(
