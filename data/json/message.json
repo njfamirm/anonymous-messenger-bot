@@ -7,6 +7,16 @@
           "text": "ارسال‌پیام‌ناشناس ♥️",
           "callback_data": "anonymous"
         }
+      ],
+      [
+        {
+          "text": "خبرنگار‌شائق 🎙",
+          "callback_data": "reporter"
+        },
+        {
+          "text": "مشتاق‌نگاهت 🙃",
+          "callback_data": "eager"
+        }
       ]
     ]
   },
@@ -51,6 +61,16 @@
           "text": "ارسال‌پیام‌ناشناس ♥️",
           "callback_data": "anonymous"
         }
+      ],
+      [
+        {
+          "text": "خبرنگار‌شائق 🎙",
+          "callback_data": "reporter"
+        },
+        {
+          "text": "مشتاق‌نگاهت 🙃",
+          "callback_data": "eager"
+        }
       ]
     ]
   },
@@ -71,26 +91,6 @@
         {
           "text": "مشتاق‌نگاهت 🙃",
           "callback_data": "eager"
-        }
-      ]
-    ]
-  },
-  "sendToAdmin": {
-    "inlineKeyboard": [
-      [
-        {
-          "text": "حذف ❌",
-          "callback_data": "deleteMessage"
-        },
-        {
-          "text": "ارسال‌به‌‌‌‌‌‌‌‌‌‌‌کانال 📲",
-          "callback_data": "sendToChannel"
-        }
-      ],
-      [
-        {
-          "text": "پاسخ ✉️",
-          "callback_data": "reply"
         }
       ]
     ]

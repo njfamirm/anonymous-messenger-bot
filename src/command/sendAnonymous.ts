@@ -1,11 +1,7 @@
 import { Scenes, session, Composer } from "telegraf";
 import bot from "../common/bot";
 import { Context } from "telegraf";
-import {
-  pleaseSendMessage,
-  sendedMessage,
-  sendToAdminMenu,
-} from "../common/message";
+import { pleaseSendMessage, sendedMessage } from "../common/message";
 import { anonymousType } from "../../data/json/message.json";
 import { leaveEditMessage, leave } from "./leave";
 import { adminsChatIds, commands } from "../../data/json/config.json";
@@ -13,8 +9,6 @@ import { inCorrect } from "../../data/json/message.json";
 import { saveMessageIdsDB } from "../db/save";
 import { messageIds } from "../common/type";
 import { checkErrorCode } from "../common/checkError";
-
-// 1105614960
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
@@ -122,9 +116,7 @@ async function sendToAdmin(ctx: Context) {
   // 2. send copy to admins
   for (const adminChatID of adminsChatIds) {
     const exit = await ctx
-      .copyMessage(adminChatID, {
-        reply_markup: { inline_keyboard: sendToAdminMenu },
-      })
+      .copyMessage(adminChatID)
       .then((messageID) => {
         adminChatIds.push(adminChatID);
         adminMessageIds.push(messageID.message_id);
@@ -134,12 +126,38 @@ async function sendToAdmin(ctx: Context) {
         type = (<any>ctx).wizard.state.message.anonymousType;
 
         // edit message and add hashtag
+        // add reply markup with chat id
         bot.telegram.editMessageText(
           adminChatID,
           messageID.message_id,
           undefined,
           `${(<any>ctx).message.text}\n\n ${anonymousType[type]}`,
-          { reply_markup: { inline_keyboard: sendToAdminMenu } }
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: "حذف ❌",
+                    callback_data: "deleteMessage",
+                  },
+                  {
+                    text: "ارسال‌به‌‌‌‌‌‌‌‌‌‌‌کانال 📲",
+                    callback_data: "sendToChannel",
+                  },
+                ],
+                [
+                  {
+                    text: "پاسخ ✉️",
+                    callback_data: "reply",
+                  },
+                  {
+                    text: String(ctx.from?.id),
+                    callback_data: "none",
+                  },
+                ],
+              ],
+            },
+          }
         );
       })
       .catch((err) => {
@@ -206,10 +224,6 @@ getMessage.action("reporter", (ctx) => {
 getMessage.action("eager", (ctx) => {
   getMessageEdit(ctx);
 });
-
-// getMessage.command("anonymous", (ctx) => {
-//   getMessageSend(ctx);
-// });
 
 // wizard
 const superWizard = new Scenes.WizardScene(

@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # install dependencies
-# RUN yarn
+RUN yarn
 
 # build ts
 RUN yarn build

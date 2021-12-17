@@ -6,7 +6,6 @@ import {
   sended,
   leave,
   menu,
-  sendToAdmin,
   deletemenu,
   sendedToChannel,
   replyToUser,
@@ -49,7 +48,6 @@ export const mainMenuMessage: Message = {
 //   inlineKeyboard: help.inlineKeyboard,
 // };
 
-export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;
 export const deleteMenu: Menu = deletemenu.inlineKeyboard;
 export const sendedToChannelMenu: Menu = sendedToChannel.inlineKeyboard;
 export const sendMenuMenu: Menu = sendMenu.inlineKeyboard;
