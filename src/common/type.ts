@@ -1,4 +1,4 @@
-import { InlineKeyboardButton, InlineKeyboardMarkup } from "typegram";
+import { InlineKeyboardButton } from "typegram";
 import { DocumentRecord } from "../1db/1db";
 
 // for all message type

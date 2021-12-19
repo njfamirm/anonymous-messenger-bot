@@ -95,6 +95,36 @@
       ]
     ]
   },
+  "sendToAdmin": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "حذف ❌",
+          "callback_data": "deleteMessage"
+        },
+        {
+          "text": "ارسال‌به‌‌‌‌‌‌‌‌‌‌‌کانال 📲",
+          "callback_data": "sendToPrivateChannel"
+        }
+      ],
+      [
+        {
+          "text": "پاسخ ✉️",
+          "callback_data": "reply"
+        }
+      ]
+    ]
+  },
+  "sendToChannel": {
+    "inlineKeyboard": [
+      [
+        {
+          "text": "ارسال‌به‌شائق ✌🏻",
+          "callback_data": "sendToPublicChannel"
+        }
+      ]
+    ]
+  },
   "sendedToChannel": {
     "inlineKeyboard": [
       [

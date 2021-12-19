@@ -11,7 +11,6 @@ import { logError } from "../common/log";
 // });
 
 export const pool = new Client(process.env.POSTGRES_URL);
-console.log(process.env.POSTGRES_URL);
 pool.connect();
 
 // create table in not exists

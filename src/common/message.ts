@@ -9,8 +9,8 @@ import {
   deletemenu,
   sendedToChannel,
   replyToUser,
-  anonymousType,
   pleaseSendReply,
+  sendToAdmin,
 } from "../../data/json/message.json";
 
 export const startMessage: Message = {
@@ -48,6 +48,7 @@ export const mainMenuMessage: Message = {
 //   inlineKeyboard: help.inlineKeyboard,
 // };
 
+export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;
 export const deleteMenu: Menu = deletemenu.inlineKeyboard;
 export const sendedToChannelMenu: Menu = sendedToChannel.inlineKeyboard;
 export const sendMenuMenu: Menu = sendMenu.inlineKeyboard;

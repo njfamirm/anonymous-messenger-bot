@@ -57,7 +57,6 @@ export async function deleteMessageSentByAdmin(ctx: Context) {
     .catch((err) => {
       // fix bug
       checkErrorCode(ctx, err, false);
-
     });
 }
 
@@ -121,7 +120,7 @@ function deleteFromRecivers(ctx: Context, messageIds: any) {
 
 // delete from bot by admin
 function deleteByAdmin(ctx: Context) {
-  ctx.deleteMessage()
+  ctx.deleteMessage();
 }
 
 bot.action("delete", deleteMessageSent);
