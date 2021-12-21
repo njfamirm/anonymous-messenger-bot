@@ -9,7 +9,7 @@ import { leave } from "../command/leave";
 // else => log error
 export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
   if (err.response === undefined || err.response.error_code === undefined) {
-    logError(err);
+    logError(err + "test");
     return;
   }
   // 403 forbiden error
@@ -21,6 +21,9 @@ export function checkErrorCode(ctx: Context | null, err: any, reply: boolean) {
     }
     leave(<any>ctx);
 
+    // for exmaple message not exist
+  } else if (err.response.error_code === 400) {
+    // nothing!
     // other error
   } else {
     logError(err);

@@ -1,2 +1,3 @@
 set cpu usage & ...
 fix reply bug
+set password docker postgres
