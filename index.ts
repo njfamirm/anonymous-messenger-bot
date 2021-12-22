@@ -4,6 +4,7 @@ import "./src/command/sendToChannel";
 import "./src/command/sendMenu";
 import "./src/db/config";
 import "./src/command/delete";
+import "./src/command/help";
 import "./src/command/reply";
 import "./src/command/unClear";
 import { logInfo } from "./src/common/log";

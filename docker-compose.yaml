@@ -12,6 +12,11 @@ services:
       - "5432:5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "5000M"
 
   bot:
     image: shaegh-bot
@@ -23,3 +28,9 @@ services:
       - POSTGRES_URL=postgres://postgres:postgres@postgres:5432/postgres
     depends_on:
       - postgres
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "500M"

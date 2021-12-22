@@ -13,10 +13,10 @@ remoteShell () {
 
 syncFolder() {
 	echoStep 'Uploading...'
-	rsync -raz \
-		--exclude='node_modules' \
-			--exclude='.git' \
-				./ $server:$serverPath
+	rsync -raz -e \
+			--exclude='node_modules' \
+				--exclude='.git' \
+					./ $server:$serverPath
 	echoStep 'Syncing complete.'
 }
 

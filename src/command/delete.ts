@@ -120,7 +120,29 @@ function deleteFromRecivers(ctx: Context, messageIds: any) {
 
 // delete from bot by admin
 function deleteByAdmin(ctx: Context) {
-  ctx.deleteMessage();
+  const query: QueryConfig = {
+    text: findMessageIdByAdminQuery,
+    values: [
+      String(ctx.from?.id),
+      String((<any>ctx).update.callback_query.message.message_id),
+    ],
+  };
+
+  // 1. get message ids
+  pool
+    .query(query)
+    .then((resp: QueryResult) => {
+      var adminChatID: Array<number> = resp.rows[0].reciverchatids;
+      for (const chatID of adminChatID) {
+        bot.telegram.deleteMessage(
+          chatID,
+          resp.rows[0].recivermessageids[adminChatID.indexOf(chatID)]
+        );
+      }
+    })
+    .catch((err) => {
+      checkErrorCode(ctx, err, false);
+    });
 }
 
 bot.action("delete", deleteMessageSent);

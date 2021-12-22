@@ -4,18 +4,22 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال‌پیام‌ناشناس ♥️",
+          "text": "آروزمندِناشناس ♥️",
           "callback_data": "anonymous"
+        },
+        {
+          "text": "خبرنگار‌شائق 🎙",
+          "callback_data": "reporter"
         }
       ],
       [
         {
-          "text": "خبرنگار‌شائق 🎙",
-          "callback_data": "reporter"
+          "text": "مشتاق‌نگاهت 🙃",
+          "callback_data": "look"
         },
         {
-          "text": "مشتاق‌نگاهت 🙃",
-          "callback_data": "eager"
+          "text": "مشتاق‌صدایت 🎧",
+          "callback_data": "voice"
         }
       ]
     ]
@@ -58,18 +62,22 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال‌پیام‌ناشناس ♥️",
+          "text": "آروزمندِناشناس ♥️",
           "callback_data": "anonymous"
+        },
+        {
+          "text": "خبرنگار‌شائق 🎙",
+          "callback_data": "reporter"
         }
       ],
       [
         {
-          "text": "خبرنگار‌شائق 🎙",
-          "callback_data": "reporter"
+          "text": "مشتاق‌نگاهت 🙃",
+          "callback_data": "look"
         },
         {
-          "text": "مشتاق‌نگاهت 🙃",
-          "callback_data": "eager"
+          "text": "مشتاق‌صدایت 🎧",
+          "callback_data": "voice"
         }
       ]
     ]
@@ -79,18 +87,22 @@
     "inlineKeyboard": [
       [
         {
-          "text": "ارسال‌پیام‌ناشناس ♥️",
+          "text": "آروزمندِناشناس ♥️",
           "callback_data": "anonymous"
+        },
+        {
+          "text": "خبرنگار‌شائق 🎙",
+          "callback_data": "reporter"
         }
       ],
       [
         {
-          "text": "خبرنگار‌شائق 🎙",
-          "callback_data": "reporter"
+          "text": "مشتاق‌نگاهت 🙃",
+          "callback_data": "look"
         },
         {
-          "text": "مشتاق‌نگاهت 🙃",
-          "callback_data": "eager"
+          "text": "مشتاق‌صدایت 🎧",
+          "callback_data": "voice"
         }
       ]
     ]
@@ -103,14 +115,18 @@
           "callback_data": "deleteMessage"
         },
         {
-          "text": "ارسال‌به‌‌‌‌‌‌‌‌‌‌‌کانال 📲",
-          "callback_data": "sendToPrivateChannel"
+          "text": "پاسخ ✉️",
+          "callback_data": "reply"
         }
       ],
       [
         {
-          "text": "پاسخ ✉️",
-          "callback_data": "reply"
+          "text": "ارسال‌به‌‌‌‌‌‌‌‌‌‌‌آرشیو 📲",
+          "callback_data": "sendToArchive"
+        },
+        {
+          "text": "ارسال‌به‌شائق ✌🏻",
+          "callback_data": "directSending"
         }
       ]
     ]
@@ -120,7 +136,7 @@
       [
         {
           "text": "ارسال‌به‌شائق ✌🏻",
-          "callback_data": "sendToPublicChannel"
+          "callback_data": "indirectSending"
         }
       ]
     ]
@@ -168,8 +184,10 @@
   "anonymousType": {
     "anonymous": "#آرزومند_شائق 💌",
     "reporter": "#خبرنگار_شائق 💌",
-    "eager": "#مشتاق_نگاهت 💌"
+    "look": "#مشتاق_نگاهت 💌",
+    "voice": "#مشتاق_صدایت 💌"
   },
+  "help": "سلام",
   "deleted": "حذف شد ✖️",
   "leaved": "خارج شد ✖️",
   "inCorrect": "حس می‌کنم اشتباه فرستادی! ✖️",

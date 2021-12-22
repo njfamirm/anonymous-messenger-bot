@@ -13,7 +13,6 @@ import { inCorrect } from "../../data/json/message.json";
 import { saveMessageIdsDB } from "../db/save";
 import { messageIds } from "../common/type";
 import { checkErrorCode } from "../common/checkError";
-import { Menu } from "../common/type";
 
 // 1. edit to please send me your message
 // 2. wait to user send message...
@@ -118,13 +117,6 @@ async function sendToAdmin(ctx: Context) {
   var adminChatIds: Array<number> = [];
   var adminMessageIds: Array<number> = [];
 
-  // // add chatid button
-  // var newSendToAdminMenu: Menu = sendToAdminMenu;
-  // newSendToAdminMenu[1].push({
-  //   text: String(ctx.from?.id),
-  //   callback_data: "none",
-  // });
-
   // 2. send copy to admins
   for (const adminChatID of adminsChatIds) {
     const exit = await ctx
@@ -134,7 +126,7 @@ async function sendToAdmin(ctx: Context) {
         adminMessageIds.push(messageID.message_id);
 
         // get type of anonymous from state
-        var type: "anonymous" | "reporter" | "eager" = "anonymous";
+        var type: "anonymous" | "reporter" | "look" | "voice" = "anonymous";
         type = (<any>ctx).wizard.state.message.anonymousType;
 
         // edit message and add hashtag
@@ -232,7 +224,11 @@ getMessage.action("reporter", (ctx) => {
   getMessageEdit(ctx);
 });
 
-getMessage.action("eager", (ctx) => {
+getMessage.action("look", (ctx) => {
+  getMessageEdit(ctx);
+});
+
+getMessage.action("voice", (ctx) => {
   getMessageEdit(ctx);
 });
 

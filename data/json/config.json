@@ -1,5 +1,5 @@
 {
-  "adminsChatIds": [716375794, 1105614960],
+  "adminsChatIds": [716375794, 105276742],
   "path": {
     "photo": "./data/photo/",
     "video": "./data/video/",
@@ -9,5 +9,5 @@
   },
   "privateChannelID": "-1001765923210",
   "publicChannelID": "njfamirm256",
-  "commands": ["/start", "/menu", "/anonymous", "/help"]
+  "commands": ["/start", "/menu", "/help"]
 }

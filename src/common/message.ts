@@ -43,11 +43,6 @@ export const mainMenuMessage: Message = {
   inlineKeyboard: menu.inlineKeyboard,
 };
 
-// export const helpMessage: Message = {
-//   text: help.text,
-//   inlineKeyboard: help.inlineKeyboard,
-// };
-
 export const sendToAdminMenu: Menu = sendToAdmin.inlineKeyboard;
 export const deleteMenu: Menu = deletemenu.inlineKeyboard;
 export const sendedToChannelMenu: Menu = sendedToChannel.inlineKeyboard;

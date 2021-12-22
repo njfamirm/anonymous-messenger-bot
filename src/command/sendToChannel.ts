@@ -34,7 +34,14 @@ async function sendToPublicChannel(ctx: Context) {
     if (exit === true) return;
   }
 
-  ctx.deleteMessage();
+  // get channel from callback_query
+  var channel = (<any>ctx).callbackQuery.data;
+
+  if (channel === "directSending") {
+    deleteMessageSentByAdmin(ctx);
+  } else {
+    ctx.deleteMessage();
+  }
 }
 
 async function sendToPrivateChannel(ctx: Context) {
@@ -61,5 +68,6 @@ function checkReply(ctx: Context) {
   return regex.exec(text);
 }
 
-bot.action("sendToPublicChannel", sendToPublicChannel);
-bot.action("sendToPrivateChannel", sendToPrivateChannel);
+bot.action("indirectSending", sendToPublicChannel);
+bot.action("directSending", sendToPublicChannel);
+bot.action("sendToArchive", sendToPrivateChannel);
