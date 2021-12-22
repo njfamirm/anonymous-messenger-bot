@@ -11,6 +11,7 @@ import {
   replyToUser,
   pleaseSendReply,
   sendToAdmin,
+  sendedReply,
 } from "../../data/json/message.json";
 
 export const startMessage: Message = {
@@ -18,7 +19,7 @@ export const startMessage: Message = {
   inlineKeyboard: start.inlineKeyboard,
 };
 
-export const pleaseSendMessage: Message = {
+export const pleaseSendMessage = {
   text: pleaseSend.text,
   inlineKeyboard: pleaseSend.inlineKeyboard,
 };
@@ -28,9 +29,14 @@ export const pleaseSendReplyMessage: Message = {
   inlineKeyboard: pleaseSendReply.inlineKeyboard,
 };
 
-export const sendedMessage: Message = {
+export const sendedMessage = {
   text: sended.text,
   inlineKeyboard: sended.inlineKeyboard,
+};
+
+export const sendedReplyMessage = {
+  text: sendedReply.text,
+  inlineKeyboard: sendedReply.inlineKeyboard,
 };
 
 export const leaveMessage: Message = {

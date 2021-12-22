@@ -1,7 +1,7 @@
 import { Context, session, Scenes } from "telegraf";
 import bot from "../common/bot";
 import { pleaseSendReplyMessage, replyMenu } from "../common/message";
-import { sendedMessage, deleteMenu } from "../common/message";
+import { sendedReplyMessage, deleteMenu } from "../common/message";
 import { pool } from "../db/config";
 import { findUserChatIdByAdminQuery } from "../../data/json/databaseQuery.json";
 import { QueryConfig, QueryResult } from "pg";
@@ -9,7 +9,7 @@ import { messageIds } from "../common/type";
 import { saveMessageIdsDB } from "../db/save";
 import { leaveEditMessage } from "./leave";
 import { checkErrorCode } from "../common/checkError";
-import {logError} from "../common/log";
+import { logError } from "../common/log";
 
 // get message
 async function getMessage(ctx: Context) {
@@ -94,9 +94,10 @@ async function sendToUser(ctx: Context) {
       if (exit === true) return;
 
       // 5. send ok to user
-      if (sendedMessage.text === undefined) return;
+      if (sendedReplyMessage.text === undefined) return;
+
       const exit2 = await ctx
-        .reply(sendedMessage.text, {
+        .reply(sendedReplyMessage.text, {
           reply_markup: { inline_keyboard: deleteMenu },
           reply_to_message_id: ctx.message?.message_id,
         })

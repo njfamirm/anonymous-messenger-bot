@@ -1,6 +1,6 @@
 #!/bin/bash
 
-serverPath='srv/najafi-telegram-bot/'
+serverPath='srv/njfamirm-telegram-bot/'
 
 echoStep() {
         echo -e "\033[0;33m→ \033[0;35m $1 \033[0m"

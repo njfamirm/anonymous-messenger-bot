@@ -28,11 +28,26 @@ async function getMessageEdit(ctx: Context) {
   }
 
   // type of anonymous message
-  const type: string = (<any>ctx).callbackQuery.data;
+  const type: "look" | "voice" | "anonymous" | "reporter" = (<any>ctx)
+    .callbackQuery.data;
 
+  var message: string;
+  switch (type) {
+    case "look":
+      message = pleaseSendMessage.text.look;
+      break;
+    case "voice":
+      message = pleaseSendMessage.text.voice;
+      break;
+    case "reporter":
+      message = pleaseSendMessage.text.reporter;
+      break;
+    default:
+      message = pleaseSendMessage.text.anonymous;
+  }
   // 1. edit to please send me your message
   ctx
-    .editMessageText(pleaseSendMessage.text, {
+    .editMessageText(message, {
       reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
     })
     .then((replyMessage) => {
@@ -40,32 +55,6 @@ async function getMessageEdit(ctx: Context) {
         replyedMessage: replyMessage,
         anonymousType: type,
       };
-    })
-    .catch((err) => {
-      checkErrorCode(ctx, err, false);
-    });
-
-  // 2. wait to user send message...
-  return (<any>ctx).wizard.next();
-}
-
-async function getMessageSend(ctx: Context) {
-  if (
-    !(
-      pleaseSendMessage.text != undefined &&
-      pleaseSendMessage.inlineKeyboard != undefined
-    )
-  )
-    return;
-
-  // 1. edit to please send me your message
-  ctx
-    .reply(pleaseSendMessage.text, {
-      reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
-      reply_to_message_id: ctx.message?.message_id,
-    })
-    .then((replyedMessage) => {
-      (<any>ctx).wizard.state.message = { replyedMessage: replyedMessage };
     })
     .catch((err) => {
       checkErrorCode(ctx, err, false);
@@ -179,9 +168,27 @@ async function sendToAdmin(ctx: Context) {
   )
     return;
 
+  var type: "anonymous" | "reporter" | "look" | "voice";
+  type = (<any>ctx).wizard.state.message.anonymousType;
+
+  var message: string;
+  switch (type) {
+    case "look":
+      message = sendedMessage.text.look;
+      break;
+    case "voice":
+      message = sendedMessage.text.voice;
+      break;
+    case "reporter":
+      message = sendedMessage.text.reporter;
+      break;
+    default:
+      message = sendedMessage.text.anonymous;
+  }
+
   // 4. sened ok | REPLY
   ctx
-    .reply(sendedMessage.text, {
+    .reply(message, {
       reply_to_message_id: ctx.message.message_id,
       reply_markup: { inline_keyboard: sendedMessage.inlineKeyboard },
     })

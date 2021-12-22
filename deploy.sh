@@ -1,7 +1,7 @@
 #!/bin/bash
 
 server='root@srv.alimd.ir'
-serverPath='~/srv/najafi-telegram-bot/'
+serverPath='srv/njfamirm-telegram-bot/'
 
 echoStep() {
 	echo -e "\033[0;33m→ \033[0;35m $1 \033[0m"
@@ -13,10 +13,10 @@ remoteShell () {
 
 syncFolder() {
 	echoStep 'Uploading...'
-	rsync -raz -e \
-			--exclude='node_modules' \
-				--exclude='.git' \
-					./ $server:$serverPath
+	rsync -raz \
+		--exclude='node_modules' \
+			--exclude='.git' \
+				./ $server:$serverPath
 	echoStep 'Syncing complete.'
 }
 
