@@ -5,7 +5,7 @@ import { privateChannelID, publicChannelID } from "../../data/json/config.json";
 import { checkErrorCode } from "../common/checkError";
 import { sendToChannel } from "../../data/json/message.json";
 
-const regex = /https:\/\/t\.me\/njfamirm256\/\d*/gm;
+const regex = new RegExp(`https://t.me/${publicChannelID}/d*`, "gm");
 
 // 1. send copy of message to channel
 // 2. delete reply markup ( send to channel from admins & delete from user )
@@ -38,25 +38,35 @@ async function sendToPublicChannel(ctx: Context) {
   var channel = (<any>ctx).callbackQuery.data;
 
   if (channel === "directSending") {
+    sendToPrivateChannel(ctx, undefined);
     deleteMessageSentByAdmin(ctx);
   } else {
-    ctx.deleteMessage();
+    ctx.editMessageReplyMarkup(undefined);
   }
 }
 
-async function sendToPrivateChannel(ctx: Context) {
+async function sendToPrivateChannel(ctx: Context, menu: any) {
   if (ctx.from === undefined) return;
 
-  const exit = await ctx
-    .copyMessage(`${privateChannelID}`, {
-      reply_markup: { inline_keyboard: sendToChannel.inlineKeyboard },
-    })
-    .catch((err) => {
+  if (menu != undefined) {
+    const exit = await ctx
+      .copyMessage(`${privateChannelID}`, {
+        reply_markup: { inline_keyboard: menu },
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, true);
+        return true;
+      });
+
+    if (exit === true) return;
+  } else {
+    const exit = await ctx.copyMessage(`${privateChannelID}`).catch((err) => {
       checkErrorCode(ctx, err, true);
       return true;
     });
 
-  if (exit === true) return;
+    if (exit === true) return;
+  }
 
   // delete message from private chat
   deleteMessageSentByAdmin(ctx);
@@ -70,4 +80,6 @@ function checkReply(ctx: Context) {
 
 bot.action("indirectSending", sendToPublicChannel);
 bot.action("directSending", sendToPublicChannel);
-bot.action("sendToArchive", sendToPrivateChannel);
+bot.action("sendToArchive", (ctx) => {
+  sendToPrivateChannel(ctx, sendToChannel.inlineKeyboard);
+});

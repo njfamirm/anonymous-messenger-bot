@@ -1,12 +1,8 @@
 import { Scenes, session, Composer } from "telegraf";
 import bot from "../common/bot";
 import { Context } from "telegraf";
-import {
-  pleaseSendMessage,
-  sendedMessage,
-  sendToAdminMenu,
-} from "../common/message";
-import { anonymousType } from "../../data/json/message.json";
+import { pleaseSendMessage, sendedMessage } from "../common/message";
+import { anonymousType, first_text } from "../../data/json/message.json";
 import { leaveEditMessage, leave } from "./leave";
 import { adminsChatIds, commands } from "../../data/json/config.json";
 import { inCorrect } from "../../data/json/message.json";
@@ -70,6 +66,35 @@ async function getMessageEdit(ctx: Context) {
 async function sendToAdmin(ctx: Context) {
   if (ctx.from === undefined) return;
 
+  var menu = [
+    [
+      {
+        text: "حذف ❌",
+        callback_data: "deleteMessage",
+      },
+      {
+        text: "پاسخ ✉️",
+        callback_data: "reply",
+      },
+    ],
+    [
+      {
+        text: "ارسال‌به‌آرشیو 📲",
+        callback_data: "sendToArchive",
+      },
+      {
+        text: "ارسال‌به‌شائق ✌🏻",
+        callback_data: "directSending",
+      },
+    ],
+    [
+      {
+        text: String(ctx.from.id),
+        callback_data: "none",
+      },
+    ],
+  ];
+
   // if message have command
   if (commands.includes((<any>ctx).message.text)) {
     leave(ctx);
@@ -105,7 +130,6 @@ async function sendToAdmin(ctx: Context) {
   // get message id and message id admins
   var adminChatIds: Array<number> = [];
   var adminMessageIds: Array<number> = [];
-
   // 2. send copy to admins
   for (const adminChatID of adminsChatIds) {
     const exit = await ctx
@@ -124,17 +148,21 @@ async function sendToAdmin(ctx: Context) {
             adminChatID,
             messageID.message_id,
             undefined,
-            `${(<any>ctx).message.text}\n\n ${anonymousType[type]}`,
+            `${first_text}\n\n ${(<any>ctx).message.text}\n\n ${
+              anonymousType[type]
+            }`,
             {
               reply_markup: {
-                inline_keyboard: sendToAdminMenu,
+                inline_keyboard: menu,
               },
             }
           );
         } else {
           var text = (<any>ctx).message.caption;
           if (text != undefined) {
-            text = `${(<any>ctx).message.caption}\n\n ${anonymousType[type]}`;
+            text = `${first_text}\n\n ${(<any>ctx).message.caption}\n\n ${
+              anonymousType[type]
+            }`;
           } else {
             text = `${anonymousType[type]}`;
           }
@@ -146,7 +174,7 @@ async function sendToAdmin(ctx: Context) {
             text,
             {
               reply_markup: {
-                inline_keyboard: sendToAdminMenu,
+                inline_keyboard: menu,
               },
             }
           );
