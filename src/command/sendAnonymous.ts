@@ -155,6 +155,7 @@ async function sendToAdmin(ctx: Context) {
               reply_markup: {
                 inline_keyboard: menu,
               },
+              disable_web_page_preview: true,
             }
           );
         } else {

@@ -5,7 +5,7 @@ import { privateChannelID, publicChannelID } from "../../data/json/config.json";
 import { checkErrorCode } from "../common/checkError";
 import { sendToChannel } from "../../data/json/message.json";
 
-const regex = new RegExp(`https://t.me/${publicChannelID}/d*`, "gm");
+const regex = /https:\/\/t\.me\/shaegh_ir\/\d*/gm;
 
 // 1. send copy of message to channel
 // 2. delete reply markup ( send to channel from admins & delete from user )
@@ -20,6 +20,7 @@ async function sendToPublicChannel(ctx: Context) {
           postReplyLink[0].replace(`https://t.me/${publicChannelID}/`, "")
         ),
       })
+
       .catch((err) => {
         checkErrorCode(ctx, err, true);
         return true;
@@ -41,7 +42,18 @@ async function sendToPublicChannel(ctx: Context) {
     sendToPrivateChannel(ctx, undefined);
     deleteMessageSentByAdmin(ctx);
   } else {
-    ctx.editMessageReplyMarkup(undefined);
+    if ((<any>ctx).update.callback_query.message.text != undefined) {
+      ctx.editMessageText(
+        (<any>ctx).update.callback_query.message.text +
+          "\n\n" +
+          (<any>ctx).from.id,
+        { disable_web_page_preview: true }
+      );
+    } else {
+      var message = (<any>ctx).update.callback_query.message.caption;
+      if (!message) message = "";
+      ctx.editMessageCaption(message + "\n\n" + (<any>ctx).from.id);
+    }
   }
 }
 
@@ -50,7 +62,7 @@ async function sendToPrivateChannel(ctx: Context, menu: any) {
 
   if (menu != undefined) {
     const exit = await ctx
-      .copyMessage(`${privateChannelID}`, {
+      .copyMessage(privateChannelID, {
         reply_markup: { inline_keyboard: menu },
       })
       .catch((err) => {
@@ -60,10 +72,34 @@ async function sendToPrivateChannel(ctx: Context, menu: any) {
 
     if (exit === true) return;
   } else {
-    const exit = await ctx.copyMessage(`${privateChannelID}`).catch((err) => {
-      checkErrorCode(ctx, err, true);
-      return true;
-    });
+    const exit = await ctx
+      .copyMessage(privateChannelID)
+      .then((chatID) => {
+        if ((<any>ctx).update.callback_query.message.text != undefined) {
+          bot.telegram.editMessageText(
+            privateChannelID,
+            chatID.message_id,
+            undefined,
+            (<any>ctx).update.callback_query.message.text +
+              "\n\n" +
+              (<any>ctx).from.id,
+            { disable_web_page_preview: true }
+          );
+        } else {
+          var message = (<any>ctx).update.callback_query.message.caption;
+          if (!message) message = "";
+          bot.telegram.editMessageCaption(
+            privateChannelID,
+            chatID.message_id,
+            undefined,
+            message + "\n\n" + (<any>ctx).from.id
+          );
+        }
+      })
+      .catch((err) => {
+        checkErrorCode(ctx, err, true);
+        return true;
+      });
 
     if (exit === true) return;
   }
