@@ -1,5 +1,5 @@
 {
-  "adminsChatIds": [716375794],
+  "adminsChatIds": [716375794, 1105614960],
   "path": {
     "photo": "./data/photo/",
     "video": "./data/video/",
@@ -7,7 +7,7 @@
     "document": "./data/document/",
     "json": "./data/json/"
   },
-  "privateChannelID": "--1001765923210",
+  "privateChannelID": "-1001765923210",
   "publicChannelID": "shaegh_ir",
   "commands": ["/start", "/menu", "/help"]
 }
