@@ -165,7 +165,7 @@ async function sendToAdmin(ctx: Context) {
               anonymousType[type]
             }`;
           } else {
-            text = `${anonymousType[type]}`;
+            text = `${anonymousType["look"]}`;
           }
 
           bot.telegram.editMessageCaption(

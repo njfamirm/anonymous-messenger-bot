@@ -3,7 +3,6 @@ import { Context } from "telegraf";
 import { deleteMessageSentByAdmin } from "./delete";
 import { privateChannelID, publicChannelID } from "../../data/json/config.json";
 import { checkErrorCode } from "../common/checkError";
-import { sendToChannel } from "../../data/json/message.json";
 
 const regex = /https:\/\/t\.me\/shaegh_ir\/\d*/gm;
 
@@ -46,13 +45,19 @@ async function sendToPublicChannel(ctx: Context) {
       ctx.editMessageText(
         (<any>ctx).update.callback_query.message.text +
           "\n\n" +
-          (<any>ctx).from.id,
+          (<any>ctx).update.callback_query.message.reply_markup
+            .inline_keyboard[0][1].text,
         { disable_web_page_preview: true }
       );
     } else {
       var message = (<any>ctx).update.callback_query.message.caption;
       if (!message) message = "";
-      ctx.editMessageCaption(message + "\n\n" + (<any>ctx).from.id);
+      ctx.editMessageCaption(
+        message +
+          "\n\n" +
+          (<any>ctx).update.callback_query.message.reply_markup
+            .inline_keyboard[0][1].text
+      );
     }
   }
 }
@@ -72,6 +77,9 @@ async function sendToPrivateChannel(ctx: Context, menu: any) {
 
     if (exit === true) return;
   } else {
+    var userChatID = (<any>ctx).update.callback_query.message.reply_markup
+      .inline_keyboard[2][0].text;
+
     const exit = await ctx
       .copyMessage(privateChannelID)
       .then((chatID) => {
@@ -80,9 +88,7 @@ async function sendToPrivateChannel(ctx: Context, menu: any) {
             privateChannelID,
             chatID.message_id,
             undefined,
-            (<any>ctx).update.callback_query.message.text +
-              "\n\n" +
-              (<any>ctx).from.id,
+            (<any>ctx).update.callback_query.message.text + "\n\n" + userChatID,
             { disable_web_page_preview: true }
           );
         } else {
@@ -92,7 +98,7 @@ async function sendToPrivateChannel(ctx: Context, menu: any) {
             privateChannelID,
             chatID.message_id,
             undefined,
-            message + "\n\n" + (<any>ctx).from.id
+            message + "\n\n" + userChatID
           );
         }
       })
@@ -117,5 +123,17 @@ function checkReply(ctx: Context) {
 bot.action("indirectSending", sendToPublicChannel);
 bot.action("directSending", sendToPublicChannel);
 bot.action("sendToArchive", (ctx) => {
-  sendToPrivateChannel(ctx, sendToChannel.inlineKeyboard);
+  sendToPrivateChannel(ctx, [
+    [
+      {
+        text: "ارسال‌به‌شائق ✌🏻",
+        callback_data: "indirectSending",
+      },
+      {
+        text: (<any>ctx).update.callback_query.message.reply_markup
+          .inline_keyboard[2][0].text,
+        callback_data: "none",
+      },
+    ],
+  ]);
 });
