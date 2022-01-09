@@ -11,4 +11,4 @@ Anonymous messaging bot for channels
 - [ ] flexiable message
 - [ ] flexiable setting
 
-**We are waiting for your participation!**
+**We are waiting for your Contribution!**
