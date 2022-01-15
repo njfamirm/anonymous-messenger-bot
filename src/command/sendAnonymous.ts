@@ -131,6 +131,9 @@ async function sendToAdmin(ctx: Context) {
   var adminChatIds: Array<number> = [];
   var adminMessageIds: Array<number> = [];
   // 2. send copy to admins
+
+  const userChatID = ctx.from.id;
+  if (ctx.from === undefined) return;
   for (const adminChatID of adminsChatIds) {
     const exit = await ctx
       .copyMessage(adminChatID)
@@ -150,7 +153,7 @@ async function sendToAdmin(ctx: Context) {
             undefined,
             `${first_text}\n\n ${(<any>ctx).message.text}\n\n ${
               anonymousType[type]
-            }`,
+            } \n\n${userChatID}`,
             {
               reply_markup: {
                 inline_keyboard: menu,
@@ -163,9 +166,9 @@ async function sendToAdmin(ctx: Context) {
           if (text != undefined) {
             text = `${first_text}\n\n ${(<any>ctx).message.caption}\n\n ${
               anonymousType[type]
-            }`;
+            } \n\n${userChatID}`;
           } else {
-            text = `${anonymousType["look"]}`;
+            text = `${anonymousType["look"]} \n\n${userChatID}`;
           }
 
           bot.telegram.editMessageCaption(

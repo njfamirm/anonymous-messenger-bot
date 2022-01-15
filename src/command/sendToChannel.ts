@@ -88,67 +88,9 @@ async function indirectSending(ctx: Context) {
   }
 }
 
-// 1. send copy of message to channel
-// 2. delete reply markup ( send to channel from admins & delete from user )
-async function sendToPublicChannel(ctx: Context) {
-  if (ctx.from === undefined) return;
-
-  const postReplyLink = checkReply(ctx);
-  if (postReplyLink != null && postReplyLink[0] != undefined) {
-    const exit = await ctx
-      .copyMessage(`@${publicChannelID}`, {
-        reply_to_message_id: parseInt(
-          postReplyLink[0].replace(`https://t.me/${publicChannelID}/`, "")
-        ),
-      })
-
-      .catch((err) => {
-        checkErrorCode(ctx, err, true);
-        return true;
-      });
-
-    if (exit === true) return;
-  } else {
-    const exit = await ctx.copyMessage(`@${publicChannelID}`).catch((err) => {
-      checkErrorCode(ctx, err, true);
-      return true;
-    });
-    if (exit === true) return;
-  }
-  sendToPrivateChannel(ctx, undefined);
-}
-
 async function sendToPrivateChannel(ctx: Context, menu: any) {
-  if (ctx.from === undefined) return;
-  var userChatID = (<any>ctx).update.callback_query.message.reply_markup
-    .inline_keyboard[2][0].text;
-
   const exit = await ctx
-    .copyMessage(privateChannelID)
-    .then((chatID) => {
-      if ((<any>ctx).update.callback_query.message.text != undefined) {
-        bot.telegram.editMessageText(
-          privateChannelID,
-          chatID.message_id,
-          undefined,
-          (<any>ctx).update.callback_query.message.text + "\n\n" + userChatID,
-          {
-            disable_web_page_preview: true,
-            reply_markup: { inline_keyboard: menu },
-          }
-        );
-      } else {
-        var message = (<any>ctx).update.callback_query.message.caption;
-        if (!message) message = "";
-        bot.telegram.editMessageCaption(
-          privateChannelID,
-          chatID.message_id,
-          undefined,
-          message + "\n\n" + userChatID,
-          { reply_markup: { inline_keyboard: menu } }
-        );
-      }
-    })
+    .copyMessage(privateChannelID, { reply_markup: { inline_keyboard: menu } })
     .catch((err) => {
       checkErrorCode(ctx, err, true);
       return true;
@@ -168,7 +110,7 @@ function checkReply(ctx: Context) {
 }
 
 bot.action("indirectSending", indirectSending);
-bot.action("directSending", sendToPublicChannel);
+bot.action("directSending", indirectSending);
 bot.action("sendToArchive", (ctx) => {
   sendToPrivateChannel(ctx, sendToChannel.inlineKeyboard);
 });
