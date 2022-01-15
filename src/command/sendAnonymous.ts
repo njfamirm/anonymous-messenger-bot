@@ -132,8 +132,9 @@ async function sendToAdmin(ctx: Context) {
   var adminMessageIds: Array<number> = [];
   // 2. send copy to admins
 
-  const userChatID = ctx.from.id;
-  if (ctx.from === undefined) return;
+  // let userChatID = ctx.from.id;
+  // if (ctx.from === undefined) return;
+  const userChatID = `#u${ctx.from.id}`;
   for (const adminChatID of adminsChatIds) {
     const exit = await ctx
       .copyMessage(adminChatID)
