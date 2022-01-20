@@ -45,6 +45,7 @@ async function getMessageEdit(ctx: Context) {
   ctx
     .editMessageText(message, {
       reply_markup: { inline_keyboard: pleaseSendMessage.inlineKeyboard },
+      disable_web_page_preview: true,
     })
     .then((replyMessage) => {
       (<any>ctx).wizard.state.message = {

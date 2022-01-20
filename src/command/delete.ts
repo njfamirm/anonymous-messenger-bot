@@ -111,7 +111,7 @@ function deleteFromRecivers(ctx: Context, messageIds: any) {
       messageIds.replymessageid,
       undefined,
       deleted,
-      { reply_markup: { inline_keyboard: [] } }
+      { reply_markup: { inline_keyboard: [] }, disable_web_page_preview: true }
     )
     .catch((err) => {
       checkErrorCode(ctx, err, false);

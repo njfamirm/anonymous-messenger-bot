@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { leaveMessage } from "../common/message";
-import {logError} from "../common/log";
+import { logError } from "../common/log";
 import { checkErrorCode } from "../common/checkError";
 
 // for leave from wizard
@@ -17,6 +17,7 @@ export async function leaveEditMessage(ctx: Context) {
   ctx
     .editMessageText(leaveMessage.text, {
       reply_markup: { inline_keyboard: leaveMessage.inlineKeyboard },
+      disable_web_page_preview: true,
     })
     .catch((err) => {
       checkErrorCode(ctx, err, false);

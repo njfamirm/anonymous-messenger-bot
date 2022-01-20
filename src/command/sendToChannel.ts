@@ -15,7 +15,9 @@ async function indirectSending(ctx: Context) {
   let caption2 = "";
   if ((<any>ctx).update.callback_query.message.text != undefined) {
     ctx
-      .editMessageText(text.substring(0, text.lastIndexOf("\n")))
+      .editMessageText(text.substring(0, text.lastIndexOf("\n")), {
+        disable_web_page_preview: true,
+      })
       .then(async () => {
         const postReplyLink = checkReply(ctx);
         if (postReplyLink != null && postReplyLink[0] != undefined) {
@@ -26,7 +28,7 @@ async function indirectSending(ctx: Context) {
               ),
             })
             .then(() => {
-              ctx.editMessageText(text);
+              ctx.editMessageText(text, { disable_web_page_preview: true });
             })
 
             .catch((err) => {
@@ -39,7 +41,7 @@ async function indirectSending(ctx: Context) {
           const exit = await ctx
             .copyMessage(`@${publicChannelID}`)
             .then(() => {
-              ctx.editMessageText(text);
+              ctx.editMessageText(text, { disable_web_page_preview: true });
             })
             .catch((err) => {
               checkErrorCode(ctx, err, true);
