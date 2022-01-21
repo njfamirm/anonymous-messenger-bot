@@ -4,10 +4,11 @@ import { deleteMessageSentByAdmin } from "./delete";
 import { privateChannelID, publicChannelID } from "../../data/json/config.json";
 import { checkErrorCode } from "../common/checkError";
 import { sendToChannel } from "../../data/json/message.json";
+import { replyUserMenu } from "../common/message";
 
 const regex = /https:\/\/t\.me\/shaegh_ir\/\d*/gm;
 
-async function indirectSending(ctx: Context) {
+async function indirectSending(ctx: Context, menu: any) {
   if (ctx.from === undefined) return;
 
   const text = (<any>ctx).update.callback_query.message.text;
@@ -28,7 +29,10 @@ async function indirectSending(ctx: Context) {
               ),
             })
             .then(() => {
-              ctx.editMessageText(text, { disable_web_page_preview: true });
+              ctx.editMessageText(text, {
+                reply_markup: { inline_keyboard: menu },
+                disable_web_page_preview: true,
+              });
             })
 
             .catch((err) => {
@@ -41,7 +45,10 @@ async function indirectSending(ctx: Context) {
           const exit = await ctx
             .copyMessage(`@${publicChannelID}`)
             .then(() => {
-              ctx.editMessageText(text, { disable_web_page_preview: true });
+              ctx.editMessageText(text, {
+                reply_markup: { inline_keyboard: menu },
+                disable_web_page_preview: true,
+              });
             })
             .catch((err) => {
               checkErrorCode(ctx, err, true);
@@ -66,7 +73,9 @@ async function indirectSending(ctx: Context) {
             ),
           })
           .then(() => {
-            ctx.editMessageCaption(caption);
+            ctx.editMessageCaption(caption, {
+              reply_markup: { inline_keyboard: menu },
+            });
           })
           .catch((err) => {
             checkErrorCode(ctx, err, true);
@@ -78,7 +87,9 @@ async function indirectSending(ctx: Context) {
         const exit = await ctx
           .copyMessage(`@${publicChannelID}`)
           .then(() => {
-            ctx.editMessageCaption(caption);
+            ctx.editMessageCaption(caption, {
+              reply_markup: { inline_keyboard: menu },
+            });
           })
           .catch((err) => {
             checkErrorCode(ctx, err, true);
@@ -111,8 +122,13 @@ function checkReply(ctx: Context) {
   return regex.exec(text);
 }
 
-bot.action("indirectSending", indirectSending);
-bot.action("directSending", indirectSending);
+bot.action("indirectSending", (ctx) => {
+  indirectSending(ctx, undefined);
+});
+bot.action("directSending", (ctx) => {
+  sendToPrivateChannel(ctx, undefined);
+  indirectSending(ctx, replyUserMenu);
+});
 bot.action("sendToArchive", (ctx) => {
   sendToPrivateChannel(ctx, sendToChannel.inlineKeyboard);
 });
