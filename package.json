@@ -5,5 +5,11 @@
   "repository": "https://github.com/njfamirm/anonymous-messenger-bot.git",
   "author": "Amir Najafi <njfamirm@gmail.com>",
   "license": "GPL-3.0-or-later",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "lerna": "^5.1.8",
+    "eslint": "^8.19.0",
+    "prettier": "^2.7.1",
+    "nx": "^14.4.2"
+  }
 }
