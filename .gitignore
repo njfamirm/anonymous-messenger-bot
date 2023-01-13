@@ -1,20 +1,30 @@
-# Dependency directories
-node_modules/
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
 
+# OSX
+.DS_STORE
+.DS_Store
+._*
 
-# yarn
-yarn-error.log
+# Windows
+Thumbs.db
+Desktop.ini
 
-# tsc compiled to js
+# Logs
+*.log*
 
-dist
+# Build
+.tsbuildinfo
+*.js
+*.map
+*.d.ts
 
-# data
+# Dependencies
+node_modules
+package-lock.json
 
-data/json/user.json
+# Yarn Integrity file
+.yarn-integrity
 
-# docker env
+# dotenv environment variables file
 .env
-
-# log
-*.log

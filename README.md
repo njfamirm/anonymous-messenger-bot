@@ -1,14 +1,8 @@
-# Telegram anonymous message bot
+# Anonymous messenger bot
 
-Anonymous messaging bot for channels
+Telegram anonymous messenger bot, for personal using and channel admins
 
-## Features
+## License
 
-- [x] send anonymous message
-- [x] auto send to channel by confirmation
-- [x] delete by sender
-- [x] reply to sender's message by admin and upside down
-- [ ] flexiable message
-- [ ] flexiable setting
-
-**We are waiting for your Contribution!**
+GNU General Public License v3.0 or later  
+See [COPYING](./COPYING) to see the full text.
